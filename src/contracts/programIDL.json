@@ -1,0 +1,696 @@
+{
+  "version": "0.1.0",
+  "name": "focus_start",
+  "instructions": [
+    {
+      "name": "initializeOwner",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ownerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "updateOwner",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ownerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newOwner",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "initializeAdmin",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ownerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "adminAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "admin",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "updateAdmin",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ownerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "adminAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "admin",
+          "type": "publicKey"
+        },
+        {
+          "name": "status",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "createMarket",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "adminAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "createMarket",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vaultUsdc",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "uid",
+          "type": "string"
+        },
+        {
+          "name": "expiresAt",
+          "type": "i64"
+        },
+        {
+          "name": "resolver",
+          "type": "string"
+        },
+        {
+          "name": "resolutionSource",
+          "type": "string"
+        },
+        {
+          "name": "resolutionOperator",
+          "type": "string"
+        },
+        {
+          "name": "expectedLowerValue",
+          "type": {
+            "array": ["f64", 10]
+          }
+        },
+        {
+          "name": "expectedUpperValue",
+          "type": {
+            "array": ["f64", 10]
+          }
+        },
+        {
+          "name": "feePercentage",
+          "type": "f64"
+        },
+        {
+          "name": "totalOutcomes",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "initialiseUserState",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "marketAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userMarketShare",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "marketId",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "adminAddLiquidity",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenAta",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "adminAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userMarketShare",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vaultUsdc",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "marketId",
+          "type": "string"
+        },
+        {
+          "name": "vaultBump",
+          "type": "u8"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "addLiquidity",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "removeLiquidity",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "buyOutcomeShare",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "sellOutcomeShare",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claimWinning",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claimLiquidity",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claimLiquidityFees",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "InitialOwner",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Admin",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "publicKey"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "token",
+            "type": "publicKey"
+          },
+          {
+            "name": "c1",
+            "type": "u64"
+          },
+          {
+            "name": "c2",
+            "type": "u64"
+          },
+          {
+            "name": "decided",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "MarketState"
+            }
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "expiresAt",
+            "type": "i64"
+          },
+          {
+            "name": "feePercentage",
+            "type": "f64"
+          },
+          {
+            "name": "resolutionSource",
+            "type": "string"
+          },
+          {
+            "name": "resolver",
+            "type": {
+              "defined": "EventType"
+            }
+          },
+          {
+            "name": "liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          },
+          {
+            "name": "volume",
+            "type": "u64"
+          },
+          {
+            "name": "availableShares",
+            "type": "u64"
+          },
+          {
+            "name": "availableOutcomeShares",
+            "type": {
+              "array": ["u64", 10]
+            }
+          },
+          {
+            "name": "totalOutcomeShares",
+            "type": {
+              "array": ["u64", 10]
+            }
+          },
+          {
+            "name": "totalOutcomes",
+            "type": "u8"
+          },
+          {
+            "name": "expectedValueLowerBound",
+            "type": {
+              "array": ["f64", 10]
+            }
+          },
+          {
+            "name": "expectedValueUpperBound",
+            "type": {
+              "array": ["f64", 10]
+            }
+          },
+          {
+            "name": "eventStarted",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Share",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "marketId",
+            "type": "u64"
+          },
+          {
+            "name": "liquidityClaimed",
+            "type": "bool"
+          },
+          {
+            "name": "shares",
+            "type": {
+              "array": ["i32", 10]
+            }
+          },
+          {
+            "name": "sharesClaimed",
+            "type": {
+              "array": ["i32", 10]
+            }
+          },
+          {
+            "name": "liquidityShares",
+            "type": "u64"
+          },
+          {
+            "name": "claimedLiquidityFees",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "EventType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Admin"
+          },
+          {
+            "name": "Pyth"
+          },
+          {
+            "name": "SwitchBoard"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Outcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Resolved",
+            "fields": [
+              {
+                "name": "outcome",
+                "type": {
+                  "defined": "Outcome"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Operator",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "GreaterThan"
+          },
+          {
+            "name": "LessThan"
+          },
+          {
+            "name": "EqualTo"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "IllegalEqual",
+      "msg": "Illegal"
+    }
+  ],
+  "metadata": {
+    "address": "4jf7uEUAqsnhiyYkZmzez7YTgyxak627UBWDrbpcFSAU"
+  }
+}

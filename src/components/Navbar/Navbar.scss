@@ -1,0 +1,47 @@
+.navbar {
+  @apply flex z-50 absolute left-0 top-0 px-6 py-4 w-full items-center justify-between;
+  border-bottom: 1px solid #1d1e20;
+  height: 10vh;
+  background-color: #080808;
+
+  &_logocontainer {
+    @apply text-2xl font-black text-white;
+    &_logo {
+      @apply w-16;
+    }
+  }
+  &_searchcontainer {
+    @apply ml-8;
+  }
+  &_navigationcontainer {
+    @apply flex gap-8 items-center;
+    &_nav {
+      @apply flex flex-col items-center;
+      img {
+        @apply w-6 mb-2;
+      }
+      div {
+        @apply font-medium text-sm;
+        color: #828282;
+      }
+    }
+    &_createbutton {
+      @apply rounded-md px-3 py-2 items-center font-medium text-sm cursor-pointer;
+      background: var(--brand-purple, #d4d5f9);
+    }
+    &_separator {
+      width: 2px;
+      background-color: #1d1e20;
+      height: 50px;
+    }
+    &_connectwallet {
+      @apply rounded-md px-3 py-2 items-center font-medium text-sm;
+      background: var(--material-90, #1d1d1d);
+      color: var(--text-grey, #dadada);
+      border: 1px;
+        border-image-slice: 1;
+
+        border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+    }
+  }
+}

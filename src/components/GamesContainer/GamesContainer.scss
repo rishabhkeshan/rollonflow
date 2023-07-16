@@ -1,0 +1,118 @@
+.markets {
+  margin-top: 10vh;
+  @apply px-32 py-4 flex w-full;
+  &_main {
+    @apply flex w-full flex-col;
+    &_banner {
+      width: 100%;
+    }
+    &_header {
+      @apply relative gap-10 px-6 py-3 items-center justify-center border-b overflow-x-auto;
+      border-color: #494949;
+      &::-webkit-scrollbar{
+        display: none;
+      }
+      &_tabs {
+        @apply flex space-x-16 text-xl font-semibold;
+        color: #494949;
+        &_text {
+          @apply text-xl font-bold;
+        }
+      }
+    }
+    &_cardscontainer {
+      @apply flex flex-col mt-2 w-full;
+      &_filters {
+        @apply flex flex-row gap-4;
+        &_filter {
+          @apply px-3 py-2 rounded-3xl cursor-pointer;
+          border: 1px solid var(--border-1, #222);
+          color: #9d9fa4;
+        }
+      }
+      &_cards {
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 25px;
+        @apply mt-8 grid;
+      }
+      &_card {
+        @apply flex flex-col rounded-lg cursor-pointer;
+        // max-width: 400px;
+        border: 1px solid var(--border-1, #222);
+        background: #0a0a0a;
+        box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.02),
+          0px 3px 6px 0px rgba(0, 0, 0, 0.02);
+        &_content {
+          @apply flex flex-col;
+          &_top {
+            @apply p-3 flex gap-4;
+            &_left {
+              @apply flex flex-col w-8/12;
+              &_tagcontainer {
+                @apply flex justify-between;
+                &_label {
+                  border: 1px solid var(--border-1, #222);
+                  background: #1b1b1b;
+                  align-self: stretch;
+                  color: #00f2b1;
+                  @apply flex text-xs gap-1 items-center rounded-md px-2 py-2;
+                }
+              }
+              &_namecontainer {
+                color: rgba(255, 255, 255, 0.9);
+                @apply text-base font-medium text-ellipsis mt-4;
+              }
+              &_textcontainer {
+              color: #b1b1b1;
+                @apply text-sm overflow-hidden text-ellipsis;
+              }
+            }
+            &_right{
+                @apply flex w-36 text-white;
+            }
+          }
+          &_yesnocontainer {
+            @apply flex px-3 w-full py-3;
+            &_yescontainer {
+              border-radius: 4px 0px 0px 4px;
+              background: rgba(182, 247, 43, 0.12);
+              color: #B6F72B;
+
+              @apply flex flex-col items-start p-2 text-sm font-semibold w-1/2;
+            }
+            &_nocontainer {
+              @apply flex flex-col items-end p-2 text-sm font-semibold w-1/2;
+              border-radius: 0px 4px 4px 0px;
+              color: #F35077;
+              background: rgba(243, 80, 119, 0.12);
+            }
+          }
+        }
+        &_footer {
+          @apply flex justify-between px-3 py-3;
+          border-top: 1px solid var(--border-1, #222);
+
+          &_left {
+            @apply flex gap-5;
+            &_detail {
+              @apply flex text-sm  gap-1 items-center font-semibold;
+              color: #b1b1b1;
+
+              img {
+                @apply h-4;
+              }
+            }
+          }
+          &_right{
+              @apply flex text-sm  gap-1 items-center font-semibold;
+              color: #b1b1b1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.active-tab{
+color: var(--brand-purple, #D4D5F9);
+}

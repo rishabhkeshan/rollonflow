@@ -1,0 +1,88 @@
+/* CoverModal.scss */
+
+.cover_modal {
+  @apply fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50;
+
+  &_content {
+    @apply w-5/12 bg-white p-12 rounded-md;
+  }
+  &_header {
+    @apply flex items-center justify-between mb-6;
+    &_title {
+      @apply text-2xl font-bold;
+    }
+    &_close {
+      @apply text-4xl p-0 bg-transparent border-none text-gray-500 cursor-pointer outline-none;
+    }
+  }
+  &_body {
+    @apply flex flex-col;
+    &_top {
+      @apply flex w-full justify-between;
+      &_left {
+        @apply flex items-start;
+        &_image {
+          @apply w-12 mr-3;
+        }
+        &_details {
+          @apply flex flex-col;
+        }
+        &_name {
+          @apply text-lg font-semibold;
+        }
+        &_vulnerability {
+          @apply text-sm;
+          color: #666;
+        }
+      }
+      &_right {
+        @apply flex;
+        &_details {
+          @apply flex flex-col justify-center items-center border px-5 py-3;
+          border: 1px solid #2a2222;
+          border-radius: 16px;
+          &_key {
+            @apply text-lg font-bold;
+          }
+          &_value {
+            @apply text-lg font-semibold;
+          }
+        }
+      }
+    }
+    &_other {
+      @apply flex justify-between mt-8;
+      &_left {
+        @apply flex flex-col;
+      }
+      &_right {
+        @apply flex flex-col ml-8;
+      }
+      &_details {
+        @apply flex flex-col items-start mt-2;
+        &_key {
+          @apply text-base font-medium;
+                    color: #666;
+
+        }
+        &_value {
+          @apply text-lg font-bold;
+        }
+      }
+    }
+    &_inputcontainer {
+      @apply flex flex-col mt-6 rounded-lg;
+      border: 1px solid rgb(57, 53, 53);
+      &_header {
+        @apply relative flex w-full flex-row gap-10 py-3 items-center justify-center border-b;
+        &_tabs {
+          @apply flex w-1/2 justify-center space-x-16 text-xl font-semibold;
+          color: #403d43;
+          &_text {
+            @apply text-xl font-bold;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+/* CoverModal.scss */
+
+.createmodal {
+  @apply fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50;
+
+  &_content {
+    @apply w-5/12 rounded-md text-white;
+    background-color: #0a0a0a;
+  }
+  &_header {
+    @apply flex items-center px-12 py-6 justify-between mb-6 pb-6;
+    border-bottom: 1px solid var(--border-1, #222);
+
+    &_title {
+      @apply text-2xl font-bold;
+    }
+    &_close {
+      @apply text-4xl p-0 bg-transparent border-none text-gray-500 cursor-pointer outline-none;
+    }
+  }
+  &_body {
+    @apply flex flex-col gap-5 mt-16 p-12;
+    &_container {
+      @apply flex justify-between items-center;
+      &_title {
+        @apply text-lg font-semibold;
+      }
+      &_subtitle {
+        @apply text-xs text-red-600;
+      }
+      &_options {
+        @apply flex gap-2;
+        &_value {
+          @apply p-3 rounded-lg cursor-pointer bg-inherit;
+          border: 1px solid var(--border-1, #222);
+        }
+      }
+      &_optionsout {
+        @apply flex;
+        &_value {
+          @apply p-3 px-4 cursor-pointer bg-inherit outline-none;
+          border: 1px solid var(--border-1, #222);
+          &:first-child {
+            border-radius: 8px 0 0 8px;
+          }
+          &:last-child {
+            border-radius: 0 8px 8px 0;
+            background-color: #1d1d1d;
+
+            width: 50px;
+            @apply cursor-text px-3;
+          }
+        }
+      }
+      &_optionsamount {
+        @apply flex;
+        &_value {
+          @apply p-3 px-4 cursor-pointer bg-inherit outline-none;
+          border: 1px solid var(--border-1, #222);
+          &:first-child {
+            border-radius: 8px 0 0 8px;
+            @apply cursor-text px-3;
+          }
+          &:last-child {
+            border-radius: 0 8px 8px 0;
+          }
+        }
+      }
+    }
+    &_submitcontainer {
+      @apply flex justify-end items-center mt-8;
+      &_button {
+        @apply flex cursor-pointer text-white px-4 py-2 h-fit w-44 rounded-lg justify-center font-bold mt-2;
+        background: #0dcd8a;
+        border: 2px solid #0dcd8a;
+      }
+    }
+  }
+}
+.selected {
+  background-color: #1d1d1d;
+}

@@ -1,0 +1,42 @@
+.landing {
+  margin-top: 10vh;
+  @apply flex w-full;
+  &_main {
+    @apply flex w-full flex-col;
+    &_banner {
+      width: 100%;
+    }
+    &_content {
+      @apply flex flex-col w-full;
+      &_markets {
+        @apply flex flex-col py-24 px-32;
+        &_title {
+          @apply text-white text-4xl font-bold;
+        }
+        &_allbutton {
+          @apply mt-8 px-8 py-4 text-lg rounded-lg font-semibold;
+          color: #101012;
+          background: var(--brand-purple, #d4d5f9);
+        }
+      }
+      &_footer{
+                @apply flex absolute bottom-0 left-0 w-full justify-between py-16 px-8 text-white;
+                &_left{
+                    &_logo{
+                        img{ @apply h-16;
+                        }
+                    }
+                }
+                &_right{
+                    @apply flex flex-col pr-6;
+                    &_text{
+                        @apply font-medium text-lg;
+                    }
+                    &_socials{
+                        @apply flex gap-2 mt-2;
+                    }
+                }
+      }
+    }
+  }
+}

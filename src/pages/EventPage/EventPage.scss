@@ -1,0 +1,435 @@
+.event {
+  margin-top: 10vh;
+  @apply px-32 py-4 flex w-full flex-col;
+  &_header {
+    @apply flex gap-4 mt-8 w-full;
+    &_imagecontainer {
+      @apply w-32 h-32;
+    }
+    &_detailscontainer {
+      @apply flex flex-col gap-4 py-4;
+      &_name {
+        @apply text-white text-4xl font-semibold;
+      }
+      &_other {
+        @apply flex flex-row gap-4;
+        &_label {
+          border: 1px solid var(--border-1, #222);
+          background: #1b1b1b;
+          align-self: stretch;
+                  color: #00f2b1;
+          @apply flex text-xs gap-1 items-center rounded-md px-2 py-2;
+        }
+        &_detail {
+          @apply flex text-sm  gap-1 items-center font-semibold;
+          color: #b1b1b1;
+
+          img {
+            @apply h-4;
+          }
+        }
+      }
+    }
+    &_right{
+      @apply flex;
+      &_button{
+        @apply flex cursor-pointer text-white px-4 py-2 h-fit w-48 rounded-lg justify-center font-bold mt-2;
+        background: #0DCD8A;
+        border: 2px solid #0DCD8A;
+
+        &:hover{
+          @apply bg-white;
+          border: 2px solid #0DCD8A;
+          color: #0DCD8A;
+        }
+
+      }
+    }
+    &_outlinkscontainer {
+      @apply flex gap-4 w-fit h-fit ml-4;
+      &_outlink {
+        @apply p-2 rounded-md;
+        background: #1d1d1d;
+        img {
+          @apply w-6;
+        }
+      }
+    }
+  }
+  &_main {
+    @apply flex w-full mt-16 gap-4;
+
+    &_cardscontainer{
+      @apply grid w-full;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+      &_card{
+        @apply w-full h-48 rounded-lg flex;
+        background-color: white;
+        &_left{
+          @apply w-3/12 flex flex-col items-center justify-center gap-3;
+          border-right: 1px black solid;
+          &_text{
+            @apply font-medium text-sm;
+          }
+          &_value{
+            @apply text-5xl font-bold;
+          }
+        }
+        &_right{
+          @apply w-9/12 flex flex-col justify-center px-4 gap-2;
+          &_box{
+            @apply flex gap-2 text-black text-sm;
+            &_text{
+              @apply font-medium;
+            }
+            &_value{
+              @apply font-bold;
+            }
+            &_roll{
+              background: #0DCD8A;
+              @apply py-2 mt-6 flex w-full justify-center items-center cursor-pointer text-white rounded-md font-bold;
+            }
+          }
+        }
+      }
+    }
+
+
+
+
+
+    &_left {
+      width: 65%;
+      @apply flex flex-col gap-4;
+      &_pricecontainer {
+        @apply grid gap-4;
+        grid-template-columns: repeat(2, minmax(200px, 2fr)) repeat(
+            2,
+            minmax(100px, 1fr)
+          );
+
+        &_yes {
+          @apply flex flex-col p-6 rounded-lg justify-center items-start;
+          border: 1.5px solid var(--border, #252525);
+          background: #101010;
+          &_price {
+            @apply text-2xl font-medium;
+            color: var(--green, #b6f72b);
+          }
+          &_text {
+            @apply text-base font-normal mt-1;
+            color: #a5a5a5;
+            span {
+              color: var(--green, #b6f72b);
+            }
+          }
+        }
+        &_no {
+          @apply flex flex-col p-6 rounded-lg justify-center items-start;
+          border: 1.5px solid var(--border, #252525);
+          background: #101010;
+          &_price {
+            @apply text-2xl font-medium;
+            color: var(--brand-red, #f55571);
+          }
+          &_text {
+            @apply text-base font-normal mt-1;
+            color: #a5a5a5;
+            span {
+              color: var(--brand-red, #f55571);
+            }
+          }
+        }
+        &_lp {
+          @apply flex flex-col p-6 rounded-lg justify-center items-center;
+          border: 1.5px solid var(--border, #252525);
+          background: #101010;
+          &_price {
+            @apply text-2xl font-medium;
+            color: var(--text-grey, #dadada);
+          }
+          &_text {
+            @apply text-base font-normal mt-1;
+            color: #a5a5a5;
+          }
+        }
+      }
+      &_graphcontainer {
+        @apply h-44 p-6;
+        background-color: #1a1b20;
+        @apply flex gap-12;
+      }
+      &_ordercontainer {
+        @apply flex flex-col w-full rounded-lg p-6 gap-2;
+        background: linear-gradient(
+          129deg,
+          #131313 0%,
+          rgba(26, 26, 26, 0) 100%
+        );
+        border: 2px solid var(--border, #252525);
+        &_title {
+          @apply text-2xl font-semibold text-white mb-4;
+        }
+
+        &_table {
+          border-radius: 5px;
+          background: #272727;
+          color: #828282;
+
+          &_header {
+            display: flex;
+            padding: 10px;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+            // &_column {
+            //   flex: 1;
+            // }
+          }
+          &_body {
+                      height: 300px;
+          overflow: scroll;
+            &_row {
+              @apply flex items-center;
+              padding: 10px;
+              text-overflow: ellipsis;
+              background-color: #080808;
+              border-bottom: 0.5px solid #ccc;
+              &:last-child {
+                border-bottom: none;
+              }
+            }
+            // &_column {
+            //   flex: 1;
+            // }
+          }
+          .wallet_column {
+            flex-basis: 20%; /* Adjust the width for Wallet Id column */
+          }
+
+          .action_column,
+          .outcome_column,
+          .quantity_column {
+            flex-basis: 15%; /* Adjust the width for other columns */
+          }
+          .time_column{
+            flex-basis: 20%;
+          }
+          .btn_column {
+            flex-basis: 15%;
+            background-color: rgb(13, 205, 138);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            color: #080808;
+            font-weight: 700;
+            @apply py-1.5;
+            &_head{
+              flex-basis: 15%;
+            }
+          }
+        }
+      }
+
+      &_aboutcontainer {
+        @apply flex flex-col w-full rounded-lg p-6 gap-2 hidden;
+        background: linear-gradient(
+          129deg,
+          #131313 0%,
+          rgba(26, 26, 26, 0) 100%
+        );
+        border: 2px solid var(--border, #252525);
+        &_title {
+          @apply text-2xl font-semibold text-white;
+        }
+        &_description {
+          @apply font-medium mt-2;
+          color: var(--text-grey, #dadada);
+          &_deployer {
+            color: #b6f72b;
+          }
+        }
+        &_expand {
+          max-height: 50px;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+        }
+        .expanded {
+          max-height: 1000px;
+          // transition: max-height 0.8s ease;
+        }
+        &_showmore {
+          @apply font-medium w-fit cursor-pointer mt-3;
+          color: #d4d5f9;
+          text-transform: uppercase;
+        }
+      }
+    }
+    &_right {
+      width: 35%;
+      visibility: hidden;
+      @apply flex-col gap-4;
+      &_holdingcontainer {
+        @apply flex flex-col w-full rounded-lg p-6 gap-2;
+        background: linear-gradient(
+          129deg,
+          #131313 0%,
+          rgba(26, 26, 26, 0) 100%
+        );
+        border: 2px solid var(--border, #252525);
+        &_title {
+          @apply text-2xl font-semibold text-white;
+        }
+        &_bar {
+          @apply flex w-full gap-2 mt-4;
+          &_green {
+            @apply w-1/2 h-2;
+            border-radius: 32423px;
+            background: var(--green, #b6f72b);
+          }
+          &_red {
+            @apply w-1/2 h-2;
+            border-radius: 32423px;
+            background: var(--brand-red, #f55571);
+          }
+        }
+        &_yesnobuttons {
+          @apply flex gap-2 mt-2;
+          color: var(--text-grey, #dadada);
+          &_yes {
+            @apply flex gap-1.5 justify-center items-center font-semibold px-4 py-3 rounded-lg cursor-pointer;
+            border: 1.5px solid #282828;
+            background: #080808;
+            span {
+              color: var(--green, #b6f72b);
+            }
+          }
+          &_no {
+            @apply flex gap-1.5 justify-center items-center font-semibold px-4 py-3 rounded-lg cursor-pointer;
+            background: #080808;
+            border: 1.5px solid #282828;
+            span {
+              color: var(--brand-red, #f55571);
+            }
+          }
+          .active_no {
+            border: 1.5px solid #f55571;
+          }
+          .active_yes {
+            border: 1.5px solid #b6f72b;
+          }
+        }
+        &_formcontainer {
+          @apply flex flex-col w-full gap-2 mt-4;
+          &_title {
+            @apply text-white text-lg font-semibold;
+          }
+          &_input {
+            @apply px-4 py-3 rounded-lg text-white outline-none;
+            border: 1px solid #282828;
+            background: var(--material-90, #1d1d1d);
+            &:focus {
+              border: 1px solid #fff;
+              box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.25);
+            }
+          }
+          &_value {
+            @apply font-medium;
+            color: #646464;
+            span {
+              color: white;
+              &:first-child {
+                @apply mr-4;
+              }
+            }
+          }
+          &_buybutton {
+            @apply flex w-full rounded-md justify-center items-center p-2 text-lg font-semibold mt-2 cursor-pointer;
+            color: var(--brand-black, #101012);
+            background: var(--green, #b6f72b);
+          }
+          &_sellbutton {
+            @apply flex w-full rounded-md justify-center items-center p-2 text-lg font-semibold mt-2 cursor-pointer;
+            color: var(--brand-black, #101012);
+            background: var(--brand-red, #f55571);
+          }
+        }
+        &_detailscontainer {
+          @apply flex flex-col mt-4;
+          &_details {
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            &_details-label {
+              @apply font-medium mr-2;
+              color: var(--light-text, #646464);
+            }
+
+            &_details-value {
+              flex-grow: 1;
+              text-align: right;
+              color: var(--text-grey, #dadada);
+            }
+          }
+        }
+      }
+      &_liquiditycontainer {
+        @apply flex flex-col w-full rounded-lg p-6 gap-2 mt-4;
+        background: linear-gradient(
+          129deg,
+          #131313 0%,
+          rgba(26, 26, 26, 0) 100%
+        );
+        border: 2px solid var(--border, #252525);
+        &_title {
+          @apply text-2xl font-semibold text-white;
+        }
+        &_formcontainer {
+          @apply flex flex-col w-full gap-2 mt-4;
+          &_title {
+            @apply text-white text-lg font-semibold;
+          }
+          &_input {
+            @apply px-4 py-3 rounded-lg text-white outline-none;
+            border: 1px solid #282828;
+            background: var(--material-90, #1d1d1d);
+            &:focus {
+              border: 1px solid #fff;
+              box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.25);
+            }
+          }
+          &_value {
+            @apply font-medium;
+            color: #646464;
+            span {
+              color: white;
+              &:first-child {
+                @apply mr-4;
+              }
+            }
+          }
+          &_addbutton {
+            @apply flex w-full rounded-md justify-center items-center p-2 text-lg font-semibold mt-2 cursor-pointer;
+            color: var(--brand-black, #101012);
+            background: var(--brand-purple, #d4d5f9);
+          }
+        }
+      }
+    }
+  }
+}
+
+.ellipse {
+  width: 1737px;
+  height: 470px;
+  border-radius: 1737px;
+  opacity: 0.3499999940395355;
+  background: #898989;
+  filter: blur(100px);
+  position: fixed;
+  z-index: 10;
+  top: -450px;
+  left: 0;
+}
