@@ -1,3 +1,4 @@
+
 access(all) contract RollOnFlow {
     pub fun generator(min: Int, max: Int): Int {
         let currentBlock = getCurrentBlock().height
@@ -5,6 +6,7 @@ access(all) contract RollOnFlow {
         let random = (randomSeed % UInt64(max - min + 1)) + UInt64(min)
         return Int(random)
     }
+
     access(all) struct Event {
         pub var id: UInt64
         pub var numberOfDices: Int
@@ -57,22 +59,26 @@ access(all) contract RollOnFlow {
         eventNumeric: Int,
         operator: String,
         expirySeconds: UFix64,
-        address: Address
+        address: Address,
+        funds: UFix64
         ) {
         let currentBlockTime = getCurrentBlock().timestamp
         let expiry = currentBlockTime.saturatingAdd(expirySeconds)
+
 
         let newBet: Event = Event(
             id: self.eventCounter + 1,
             numberOfDices: numberOfDices,
             eventNumeric: eventNumeric,
             operator: operator,
-            funds: 0.0,
+            funds: funds,
             eventCreator: address,
             expiry: expiry
         )
         self.events[newBet.id] = newBet
         self.eventCounter = self.eventCounter + 1
+
+
     }
 
     pub fun getAllEvents(): {UInt64: Event} {
