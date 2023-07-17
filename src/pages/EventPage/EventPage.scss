@@ -17,7 +17,7 @@
           border: 1px solid var(--border-1, #222);
           background: #1b1b1b;
           align-self: stretch;
-                  color: #00f2b1;
+          color: #00f2b1;
           @apply flex text-xs gap-1 items-center rounded-md px-2 py-2;
         }
         &_detail {
@@ -30,19 +30,18 @@
         }
       }
     }
-    &_right{
+    &_right {
       @apply flex;
-      &_button{
+      &_button {
         @apply flex cursor-pointer text-white px-4 py-2 h-fit w-48 rounded-lg justify-center font-bold mt-2;
-        background: #0DCD8A;
-        border: 2px solid #0DCD8A;
+        background: #0dcd8a;
+        border: 2px solid #0dcd8a;
 
-        &:hover{
+        &:hover {
           @apply bg-white;
-          border: 2px solid #0DCD8A;
-          color: #0DCD8A;
+          border: 2px solid #0dcd8a;
+          color: #0dcd8a;
         }
-
       }
     }
     &_outlinkscontainer {
@@ -57,37 +56,37 @@
     }
   }
   &_main {
-    @apply flex w-full mt-16 gap-4;
+    @apply flex w-full mt-8 gap-4;
 
-    &_cardscontainer{
+    &_cardscontainer {
       @apply grid w-full;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 20px;
-      &_card{
+      &_card {
         @apply w-full h-48 rounded-lg flex;
         background-color: white;
-        &_left{
+        &_left {
           @apply w-3/12 flex flex-col items-center justify-center gap-3;
           border-right: 1px black solid;
-          &_text{
+          &_text {
             @apply font-medium text-sm;
           }
-          &_value{
+          &_value {
             @apply text-5xl font-bold;
           }
         }
-        &_right{
+        &_right {
           @apply w-9/12 flex flex-col justify-center px-4 gap-2;
-          &_box{
+          &_box {
             @apply flex gap-2 text-black text-sm;
-            &_text{
+            &_text {
               @apply font-medium;
             }
-            &_value{
+            &_value {
               @apply font-bold;
             }
-            &_roll{
-              background: #0DCD8A;
+            &_roll {
+              background: #0dcd8a;
               @apply py-2 mt-6 flex w-full justify-center items-center cursor-pointer text-white rounded-md font-bold;
             }
           }
@@ -95,182 +94,20 @@
       }
     }
 
-
-
-
-
     &_left {
-      width: 65%;
+      width: 55%;
       @apply flex flex-col gap-4;
-      &_pricecontainer {
-        @apply grid gap-4;
-        grid-template-columns: repeat(2, minmax(200px, 2fr)) repeat(
-            2,
-            minmax(100px, 1fr)
-          );
-
-        &_yes {
-          @apply flex flex-col p-6 rounded-lg justify-center items-start;
-          border: 1.5px solid var(--border, #252525);
-          background: #101010;
-          &_price {
-            @apply text-2xl font-medium;
-            color: var(--green, #b6f72b);
-          }
-          &_text {
-            @apply text-base font-normal mt-1;
-            color: #a5a5a5;
-            span {
-              color: var(--green, #b6f72b);
-            }
-          }
-        }
-        &_no {
-          @apply flex flex-col p-6 rounded-lg justify-center items-start;
-          border: 1.5px solid var(--border, #252525);
-          background: #101010;
-          &_price {
-            @apply text-2xl font-medium;
-            color: var(--brand-red, #f55571);
-          }
-          &_text {
-            @apply text-base font-normal mt-1;
-            color: #a5a5a5;
-            span {
-              color: var(--brand-red, #f55571);
-            }
-          }
-        }
-        &_lp {
-          @apply flex flex-col p-6 rounded-lg justify-center items-center;
-          border: 1.5px solid var(--border, #252525);
-          background: #101010;
-          &_price {
-            @apply text-2xl font-medium;
-            color: var(--text-grey, #dadada);
-          }
-          &_text {
-            @apply text-base font-normal mt-1;
-            color: #a5a5a5;
-          }
-        }
-      }
       &_graphcontainer {
         @apply h-44 p-6;
         background-color: #1a1b20;
         @apply flex gap-12;
       }
-      &_ordercontainer {
-        @apply flex flex-col w-full rounded-lg p-6 gap-2;
-        background: linear-gradient(
-          129deg,
-          #131313 0%,
-          rgba(26, 26, 26, 0) 100%
-        );
-        border: 2px solid var(--border, #252525);
-        &_title {
-          @apply text-2xl font-semibold text-white mb-4;
-        }
-
-        &_table {
-          border-radius: 5px;
-          background: #272727;
-          color: #828282;
-
-          &_header {
-            display: flex;
-            padding: 10px;
-            font-weight: bold;
-            border-bottom: 1px solid black;
-            // &_column {
-            //   flex: 1;
-            // }
-          }
-          &_body {
-                      height: 300px;
-          overflow: scroll;
-            &_row {
-              @apply flex items-center;
-              padding: 10px;
-              text-overflow: ellipsis;
-              background-color: #080808;
-              border-bottom: 0.5px solid #ccc;
-              &:last-child {
-                border-bottom: none;
-              }
-            }
-            // &_column {
-            //   flex: 1;
-            // }
-          }
-          .wallet_column {
-            flex-basis: 20%; /* Adjust the width for Wallet Id column */
-          }
-
-          .action_column,
-          .outcome_column,
-          .quantity_column {
-            flex-basis: 15%; /* Adjust the width for other columns */
-          }
-          .time_column{
-            flex-basis: 20%;
-          }
-          .btn_column {
-            flex-basis: 15%;
-            background-color: rgb(13, 205, 138);
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            color: #080808;
-            font-weight: 700;
-            @apply py-1.5;
-            &_head{
-              flex-basis: 15%;
-            }
-          }
-        }
-      }
-
-      &_aboutcontainer {
-        @apply flex flex-col w-full rounded-lg p-6 gap-2 hidden;
-        background: linear-gradient(
-          129deg,
-          #131313 0%,
-          rgba(26, 26, 26, 0) 100%
-        );
-        border: 2px solid var(--border, #252525);
-        &_title {
-          @apply text-2xl font-semibold text-white;
-        }
-        &_description {
-          @apply font-medium mt-2;
-          color: var(--text-grey, #dadada);
-          &_deployer {
-            color: #b6f72b;
-          }
-        }
-        &_expand {
-          max-height: 50px;
-          overflow: hidden;
-          transition: max-height 0.3s ease;
-        }
-        .expanded {
-          max-height: 1000px;
-          // transition: max-height 0.8s ease;
-        }
-        &_showmore {
-          @apply font-medium w-fit cursor-pointer mt-3;
-          color: #d4d5f9;
-          text-transform: uppercase;
-        }
-      }
     }
     &_right {
-      width: 35%;
-      visibility: hidden;
+      width: 45%;
       @apply flex-col gap-4;
-      &_holdingcontainer {
-        @apply flex flex-col w-full rounded-lg p-6 gap-2;
+      &_betcontainer {
+        @apply flex flex-col w-full rounded-lg p-6 gap-2 text-white;
         background: linear-gradient(
           129deg,
           #131313 0%,
@@ -278,7 +115,45 @@
         );
         border: 2px solid var(--border, #252525);
         &_title {
-          @apply text-2xl font-semibold text-white;
+          @apply text-2xl font-semibold mb-6;
+        }
+        &_container {
+          @apply flex justify-between items-center;
+          &_title {
+            @apply text-lg font-semibold;
+          }
+          &_subtitle {
+            @apply text-xs text-red-600;
+          }
+          &_options {
+            @apply flex gap-2 justify-end;
+            width: 350px;
+            &_value {
+              @apply p-3 rounded-lg cursor-pointer bg-inherit px-6 flex justify-center;
+              width: 96px !important;
+              border: 1px solid var(--border-1, #222);
+            }
+            .input{
+              @apply outline-none cursor-text text-center w-full p-3 rounded-lg bg-inherit flex justify-center;
+              border: none;
+              border-radius: 0px;
+              border-bottom: 1px solid var(--border-1, #222);
+
+            }
+          }
+        }
+        .final{
+          @apply px-4 py-3 rounded-lg text-center my-3 font-bold flex w-full justify-center;
+              border: 1px solid var(--border-1, #222);
+              span{
+                @apply px-1.5 underline font-black;
+              }
+        }
+        .button{
+          @apply px-4 py-3 rounded-lg text-center font-bold flex w-full justify-center cursor-pointer;
+          border: 1px solid var(--border-1, #222);
+          background: #0dcd8a;
+
         }
         &_bar {
           @apply flex w-full gap-2 mt-4;

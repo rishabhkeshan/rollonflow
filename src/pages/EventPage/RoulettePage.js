@@ -7,7 +7,6 @@ import Dropup from "../../assets/dropup.svg";
 import Dice from "react-dice-roll";
 import { Wheel } from "react-custom-roulette";
 
-
 import "./EventPage.scss";
 import EventModal from "../../components/EventModal/EventModal";
 import CreateEventModal from "../../components/CreateEventModal/CreateEventModal";
@@ -65,9 +64,9 @@ const fontSize = 20;
 const textDistance = 86;
 export default function RoulettePage() {
   const onClick = async () => {};
-    const [mustSpin, setMustSpin] = useState(false);
-    const [prizeNumber, setPrizeNumber] = useState(0);
-    
+  const [mustSpin, setMustSpin] = useState(false);
+  const [outcome, setOutcome] = useState(0);
+
   const cardData = {
     type: "Against the computer",
     name: "Beat the Roulette",
@@ -76,16 +75,32 @@ export default function RoulettePage() {
     icon: EventImage,
   };
   const handleSpinClick = () => {
-    // The Wheel component will call this function when spin is clicked
-    // The next line will set the prize number to a random number between 0 and end of data array(which will be no. of questions)
-    // You can then access the question number(option name) through indexing(newPrizeNumber is the index value).
     const newPrizeNumber = Math.floor(Math.random() * data.length);
     console.log("newPrizeNumber", newPrizeNumber);
     console.log("prize selected", data[newPrizeNumber].option);
-    setPrizeNumber(newPrizeNumber);
+    setOutcome(newPrizeNumber);
     setMustSpin(true);
   };
+  const [selectedBet, setSelectedBet] = useState("");
+  const [higherLowerInput, setHigherLowerInput] = useState(""); 
+  const [amountInput, setAmountInput] = useState(""); 
+  const handleBetTypeClick = (betType) => {
+    setSelectedBet(betType);
+  };
 
+  const handleHigherLowerInputChange = (e) => {
+    setHigherLowerInput(e.target.value);
+  };
+  const handleAmountInputChange = (e) => {
+    setAmountInput(e.target.value);
+  };
+
+  const handlePlaceBetClick = () => {
+    // Perform the necessary logic for placing the bet
+    console.log("Selected Bet:", selectedBet);
+    console.log("Higher/Lower Input:", higherLowerInput);
+    console.log("Amount Input:", amountInput);
+  };
   return (
     <div className="event">
       <Navbar />
@@ -115,7 +130,7 @@ export default function RoulettePage() {
         <div className="event_main_left">
           <Wheel
             mustStartSpinning={mustSpin}
-            prizeNumber={prizeNumber}
+            prizeNumber={outcome}
             data={data}
             backgroundColors={backgroundColors}
             textColors={textColors}
@@ -136,6 +151,116 @@ export default function RoulettePage() {
           <button className={"spin-button"} onClick={handleSpinClick}>
             SPIN
           </button>
+        </div>
+        <div className="event_main_right">
+          <div className="event_main_right_betcontainer">
+            <div className="event_main_right_betcontainer_title">
+              Choose your bet
+            </div>
+
+            <div className="event_main_right_betcontainer_container">
+              <div className="event_main_right_betcontainer_container_title">
+                Odd/Even
+              </div>
+              <div className="event_main_right_betcontainer_container_options">
+                <div
+                  className={`event_main_right_betcontainer_container_options_value odd ${
+                    selectedBet === "odd" ? "selected" : ""
+                  }`}
+                  onClick={() => handleBetTypeClick("odd")}
+                >
+                  Odd
+                </div>
+                <div
+                  className={`event_main_right_betcontainer_container_options_value even ${
+                    selectedBet === "even" ? "selected" : ""
+                  }`}
+                  onClick={() => handleBetTypeClick("even")}
+                >
+                  Even
+                </div>
+              </div>
+            </div>
+
+            <div className="event_main_right_betcontainer_container">
+              <div className="event_main_right_betcontainer_container_title">
+                Red/Black
+              </div>
+              <div className="event_main_right_betcontainer_container_options">
+                <div
+                  className={`event_main_right_betcontainer_container_options_value red ${
+                    selectedBet === "red" ? "selected" : ""
+                  }`}
+                  onClick={() => handleBetTypeClick("red")}
+                >
+                  Red
+                </div>
+                <div
+                  className={`event_main_right_betcontainer_container_options_value black ${
+                    selectedBet === "black" ? "selected" : ""
+                  }`}
+                  onClick={() => handleBetTypeClick("black")}
+                >
+                  Black
+                </div>
+              </div>
+            </div>
+
+            <div className="event_main_right_betcontainer_container">
+              <div className="event_main_right_betcontainer_container_title">
+                Higher/Lower
+              </div>
+              <div className="event_main_right_betcontainer_container_options">
+                <input
+                  className={`input ${
+                    selectedBet === "higher" || "lower" ? "" : "disabled"
+                  }`}
+                  value={higherLowerInput}
+                  onChange={handleHigherLowerInputChange}
+                  disabled={
+                    selectedBet !== "higher" && selectedBet !== "lower"
+                  }
+                />
+                <div
+                  className={`event_main_right_betcontainer_container_options_value higher ${
+                    selectedBet === "higher" ? "selected" : ""
+                  }`}
+                  onClick={() => handleBetTypeClick("higher")}
+                >
+                  Higher
+                </div>
+                <div
+                  className={`event_main_right_betcontainer_container_options_value lower ${
+                    selectedBet === "lower" ? "selected" : ""
+                  }`}
+                  onClick={() => handleBetTypeClick("lower")}
+                >
+                  Lower
+                </div>
+              </div>
+            </div>
+
+            <div className="event_main_right_betcontainer_container">
+              <div className="event_main_right_betcontainer_container_title">
+                Amount
+              </div>
+              <div className="event_main_right_betcontainer_container_options">
+                <input
+                  className="input"
+                  value={amountInput}
+                  onChange={handleAmountInputChange}
+                />
+              </div>
+            </div>
+
+            <div className="event_main_right_betcontainer_container final">
+              {`You have chosen`} <span>{`${selectedBet} outcome`}</span> for{" "}
+              <span>{`${amountInput} FLOW`}</span>
+            </div>
+            <div className="event_main_right_betcontainer_container button">
+              {`Bet Now`}
+            </div>
+          </div>
         </div>
       </div>
     </div>
