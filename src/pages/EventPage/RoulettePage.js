@@ -6,11 +6,14 @@ import Dropdown from "../../assets/dropdown.svg";
 import Dropup from "../../assets/dropup.svg";
 import Dice from "react-dice-roll";
 import { Wheel } from "react-custom-roulette";
+import * as fcl from "@onflow/fcl";
 
 import "./EventPage.scss";
 import EventModal from "../../components/EventModal/EventModal";
 import CreateEventModal from "../../components/CreateEventModal/CreateEventModal";
 import { useSnackbar } from "notistack";
+import Loader from "../../components/Loader/Loader";
+import FlowClient from "../../contracts/flowclient";
 
 const data = [
   { option: "0", style: { backgroundColor: "#006900" } },
@@ -68,6 +71,21 @@ export default function RoulettePage() {
   const [mustSpin, setMustSpin] = useState(false);
   const [outcome, setOutcome] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
+  const [showLoading, setShowLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    fcl.currentUser().subscribe((user) => {
+      console.log("user", user);
+      if (user.loggedIn) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+  }, []);
+  const flowjs = new FlowClient(currentUser);
+
   const showErrorSnack = (message) => {
     enqueueSnackbar(message, {
       variant: "error",
@@ -124,8 +142,30 @@ export default function RoulettePage() {
     setAmountInput(e.target.value);
   };
 
-  const handlePlaceBetClick = () => {
-    // Perform the necessary logic for placing the bet
+  const handlePlaceBetClick = async() => {
+
+    let betType = selectedBet;
+    if(selectedBet==="higher")
+    betType ="high";
+    if(selectedBet==="lower")
+    betType ="low";
+
+      try {
+        const res = await flowjs.roulette(
+          betType,
+          higherLowerInput,
+          amountInput,
+          currentUser.addr
+        );
+        console.log(res);
+        showSuccessSnack("Event created successfully");
+        setShowLoading(false);
+      } catch (err) {
+        console.log(err);      
+        showErrorSnack("Could not create a bet");
+
+        setShowLoading(false);
+      }
     console.log("Selected Bet:", selectedBet);
     console.log("Higher/Lower Input:", higherLowerInput);
     console.log("Amount Input:", amountInput);
@@ -133,6 +173,8 @@ export default function RoulettePage() {
   return (
     <div className="event">
       <Navbar />
+      <Loader showLoading={showLoading} />
+
       <div className="ellipse" />
       <div className="event_header">
         <div className="flex w-full gap-4">
@@ -289,7 +331,10 @@ export default function RoulettePage() {
               } outcome`}</span>{" "}
               for <span>{`${amountInput} FLOW`}</span>
             </div>
-            <div className="event_main_right_betcontainer_container button">
+            <div
+              onClick={handlePlaceBetClick}
+              className="event_main_right_betcontainer_container button"
+            >
               {`Bet Now`}
             </div>
           </div>
