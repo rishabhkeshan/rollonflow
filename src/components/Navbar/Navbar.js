@@ -11,6 +11,7 @@ fcl.config({
   "discovery.authn.endpoint":
     "https://fcl-discovery.onflow.org/api/testnet/authn",
   "discovery.wallet": "https://fcl-discovery.onflow.org/testnet/authn",
+  "fcl.eventPollRate": 3000,
 });
 
 export default function Navbar() {

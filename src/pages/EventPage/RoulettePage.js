@@ -10,6 +10,7 @@ import { Wheel } from "react-custom-roulette";
 import "./EventPage.scss";
 import EventModal from "../../components/EventModal/EventModal";
 import CreateEventModal from "../../components/CreateEventModal/CreateEventModal";
+import { useSnackbar } from "notistack";
 
 const data = [
   { option: "0", style: { backgroundColor: "#006900" } },
@@ -66,6 +67,29 @@ export default function RoulettePage() {
   const onClick = async () => {};
   const [mustSpin, setMustSpin] = useState(false);
   const [outcome, setOutcome] = useState(0);
+  const { enqueueSnackbar } = useSnackbar();
+  const showErrorSnack = (message) => {
+    enqueueSnackbar(message, {
+      variant: "error",
+      preventDuplicate: true,
+      autoHideDuration: 3000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
+  };
+  const showSuccessSnack = (message) => {
+    enqueueSnackbar(message, {
+      variant: "success",
+      preventDuplicate: true,
+      autoHideDuration: 3000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
+  };
 
   const cardData = {
     type: "Against the computer",
@@ -82,14 +106,19 @@ export default function RoulettePage() {
     setMustSpin(true);
   };
   const [selectedBet, setSelectedBet] = useState("");
-  const [higherLowerInput, setHigherLowerInput] = useState(""); 
-  const [amountInput, setAmountInput] = useState(""); 
+  const [higherLowerInput, setHigherLowerInput] = useState("");
+  const [amountInput, setAmountInput] = useState("");
   const handleBetTypeClick = (betType) => {
     setSelectedBet(betType);
   };
 
   const handleHigherLowerInputChange = (e) => {
-    setHigherLowerInput(e.target.value);
+    const inputValue = e.target.value;
+    if (inputValue === "" || (inputValue >= 1 && inputValue <= 36)) {
+      setHigherLowerInput(inputValue);
+    } else {
+      showErrorSnack("Value should be between 1 and 36");
+    }
   };
   const handleAmountInputChange = (e) => {
     setAmountInput(e.target.value);
@@ -217,9 +246,7 @@ export default function RoulettePage() {
                   }`}
                   value={higherLowerInput}
                   onChange={handleHigherLowerInputChange}
-                  disabled={
-                    selectedBet !== "higher" && selectedBet !== "lower"
-                  }
+                  disabled={selectedBet !== "higher" && selectedBet !== "lower"}
                 />
                 <div
                   className={`event_main_right_betcontainer_container_options_value higher ${
@@ -254,8 +281,13 @@ export default function RoulettePage() {
             </div>
 
             <div className="event_main_right_betcontainer_container final">
-              {`You have chosen`} <span>{`${selectedBet} outcome`}</span> for{" "}
-              <span>{`${amountInput} FLOW`}</span>
+              {`You have chosen`}{" "}
+              <span>{`${selectedBet} ${
+                selectedBet === "higher" || selectedBet === "lower"
+                  ? `than ${higherLowerInput}`
+                  : ""
+              } outcome`}</span>{" "}
+              for <span>{`${amountInput} FLOW`}</span>
             </div>
             <div className="event_main_right_betcontainer_container button">
               {`Bet Now`}

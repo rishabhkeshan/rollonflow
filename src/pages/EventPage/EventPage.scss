@@ -133,27 +133,26 @@
               width: 96px !important;
               border: 1px solid var(--border-1, #222);
             }
-            .input{
+            .input {
               @apply outline-none cursor-text text-center w-full p-3 rounded-lg bg-inherit flex justify-center;
               border: none;
               border-radius: 0px;
               border-bottom: 1px solid var(--border-1, #222);
-
+              background-color: #1d1d1d;
             }
           }
         }
-        .final{
+        .final {
           @apply px-4 py-3 rounded-lg text-center my-3 font-bold flex w-full justify-center;
-              border: 1px solid var(--border-1, #222);
-              span{
-                @apply px-1.5 underline font-black;
-              }
+          border: 1px solid var(--border-1, #222);
+          span {
+            @apply px-1.5 underline font-black;
+          }
         }
-        .button{
+        .button {
           @apply px-4 py-3 rounded-lg text-center font-bold flex w-full justify-center cursor-pointer;
           border: 1px solid var(--border-1, #222);
           background: #0dcd8a;
-
         }
         &_bar {
           @apply flex w-full gap-2 mt-4;

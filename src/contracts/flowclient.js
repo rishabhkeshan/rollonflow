@@ -76,10 +76,10 @@ class FlowClient {
     return await this.executeQuery(cadence)
   }
 
-  async eventsList() {
+  eventsList() {
     const mapper = {}
-    const contractAddress = "0x995a5c89574e5e95";
-    const contractName = "RollOnFlow";
+    const contractAddress = "995a5c89574e5e95";
+    const contractName = "RollOnFlow_v01";
     const rollPublisher = "RollPublisher";
     const paymentPublisher = "PaymentPublisher";
     const roulettePublisher = "RoulettePublisher";
@@ -88,6 +88,7 @@ class FlowClient {
     mapper.paymentPublisherEvent = `A.${contractAddress}.${contractName}.${paymentPublisher}`;
     mapper.roulettePublisherEvent = `A.${contractAddress}.${contractName}.${roulettePublisher}`;
     return mapper
+
   }
 
   async executeMutation(script) {

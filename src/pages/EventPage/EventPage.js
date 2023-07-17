@@ -8,42 +8,90 @@ import Dropup from "../../assets/dropup.svg";
 import Dice from "react-dice-roll";
 import FlowClient from "../../contracts/flowclient";
 
-
 import "./EventPage.scss";
 import EventModal from "../../components/EventModal/EventModal";
 import CreateEventModal from "../../components/CreateEventModal/CreateEventModal";
+import { useSnackbar } from "notistack";
+import Loader from "../../components/Loader/Loader";
 
 export default function EventPage() {
-    const [currentUser, setCurrentUser] = useState(null);
-    useEffect(() => {
-      fcl.currentUser().subscribe(async (user) => {
-        console.log("user", user);
-        if (user.loggedIn) {
-          let orderBookData = []
-          setCurrentUser(user);
-          const flowjs = new FlowClient(user);
-          const response = await flowjs.getAllEvents();
-          console.log(response)
-          response.forEach((res) => {
-            var date = new Date(parseFloat(res.expiry * 1000))
-            const obj = {
-              walletAddress: res.eventCreator,
-              numberOfDices: res.numberOfDices,
-              outcomeType: `${res.operator} ${res.eventNumeric}`,
-              betAmount: `${parseFloat(res.funds)} FLOW`,
-              expiryDateTime: date.toLocaleString("en-GB", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit", year: "numeric" }).replaceAll("/", "."),
-              blockHeight: 123456,
-              betAgainst: "Bet Against",
-            }
-            orderBookData.push(obj)
-          })
-          setAllEvents(orderBookData)
-        } else {
-          setCurrentUser(null);
-        }
-      });
+  const [currentUser, setCurrentUser] = useState(null);
 
-    }, []);
+  const [showLoading, setShowLoading] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+  const showErrorSnack = (message) => {
+    enqueueSnackbar(message, {
+      variant: "error",
+      preventDuplicate: true,
+      autoHideDuration: 3000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
+  };
+  const showSuccessSnack = (message) => {
+    enqueueSnackbar(message, {
+      variant: "success",
+      preventDuplicate: true,
+      autoHideDuration: 3000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
+  };
+
+  useEffect(() => {
+    fcl.currentUser().subscribe(async (user) => {
+      console.log("user", user);
+      if (user.loggedIn) {
+        setShowLoading(true);
+
+        let orderBookData = [];
+        setCurrentUser(user);
+        const flowjs = new FlowClient(user);
+        const response = await flowjs.getAllEvents();
+        console.log(response);
+        response.forEach((res) => {
+          var date = new Date(parseFloat(res.expiry * 1000));
+          if (res.operator === "<=") {
+            res.operator = "≤";
+          } else if (res.operator === ">=") {
+            res.operator = "≥";
+          }
+          const obj = {
+            id: res.id,
+            walletAddress: res.eventCreator,
+            numberOfDices: res.numberOfDices,
+            outcomeType: `${res.operator} ${res.eventNumeric}`,
+            funds: parseFloat(res.funds).toFixed(1),
+            betAmount: `${parseFloat(res.funds)} FLOW`,
+            expiryDateTime: date
+              .toLocaleString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
+              .replaceAll("/", "."),
+            blockHeight: 123456,
+            betAgainst: "Bet Against",
+          };
+          orderBookData.push(obj);
+        });
+
+        setAllEvents(orderBookData);
+        setShowLoading(false);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+  }, []);
+  const flowjs = new FlowClient(currentUser);
+
   const [allEvents, setAllEvents] = useState([]);
   const onClick = async () => {};
   const cardData = {
@@ -53,128 +101,64 @@ export default function EventPage() {
     date: "May 31, 2023",
     icon: EventImage,
   };
-  const orderBookData = [
-    {
-      walletAddress: "0x1a0a4f79f7cbbb635d5a6f2f49e2f11f",
-      numberOfDices: 2,
-      outcomeType: "> 7",
-      betAmount: "0.5 FLOW",
-      expiryDateTime: "2023-07-20 10:30",
-      blockHeight: 123456,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x3c2545d87e10f7f9c42b8c55791e0d1e",
-      numberOfDices: 3,
-      outcomeType: "> 4",
-      betAmount: "1.2 FLOW",
-      expiryDateTime: "2023-07-21 15:45",
-      blockHeight: 123457,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x6d3b4e2a17599e3f1f775e413e1dd2b6",
-      numberOfDices: 1,
-      outcomeType: "≥ 8",
-      betAmount: "0.8 FLOW",
-      expiryDateTime: "2023-07-22 09:00",
-      blockHeight: 123458,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x47c3cdd89dcd2a2d673ed12e8a3cbbd8",
-      numberOfDices: 2,
-      outcomeType: "> 7",
-      betAmount: "0.3 FLOW",
-      expiryDateTime: "2023-07-23 13:15",
-      blockHeight: 123459,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x98ff4d9a7bdc7db91a6d51e2d184e6b5",
-      numberOfDices: 3,
-      outcomeType: "> 4",
-      betAmount: "0.9 FLOW",
-      expiryDateTime: "2023-07-24 11:30",
-      blockHeight: 123460,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x817f03668287af4fcfaab2ac4d64dc0c",
-      numberOfDices: 1,
-      outcomeType: "≤ 8",
-      betAmount: "0.7 FLOW",
-      expiryDateTime: "2023-07-25 16:45",
-      blockHeight: 123461,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x24df8a19530c48794e0912a6a23412bb",
-      numberOfDices: 2,
-      outcomeType: "> 7",
-      betAmount: "0.4 FLOW",
-      expiryDateTime: "2023-07-26 14:00",
-      blockHeight: 123462,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x7f9e5a193fb3f4aace7eb537dc30b7a9",
-      numberOfDices: 3,
-      outcomeType: "≤ 4",
-      betAmount: "1.5 FLOW",
-      expiryDateTime: "2023-07-27 09:15",
-      blockHeight: 123463,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x33a24c5bca3f6eb7dfb4b61662177a2f",
-      numberOfDices: 1,
-      outcomeType: "≤ 8",
-      betAmount: "0.6 FLOW",
-      expiryDateTime: "2023-07-28 12:30",
-      blockHeight: 123464,
-      betAgainst: "Bet Against",
-    },
-    {
-      walletAddress: "0x4f212f7a4db34c1bdf63673f7c7dbb33",
-      numberOfDices: 2,
-      outcomeType: "> 7",
-      betAmount: "0.8 FLOW",
-      expiryDateTime: "2023-07-29 10:45",
-      blockHeight: 123465,
-      betAgainst: "Bet Against",
-    },
-  ];
-  const [YesNoActive, setYesNoActive] = useState("yes");
-
-  const handleButtonClick = (button) => {
-    setYesNoActive(button);
-  };
-  const [showMore, setShowMore] = useState(false);
-
-  const handleShowToggle = () => {
-    setShowMore(!showMore);
-  };
-  const getShortenedAddress = (address) => {
-    const firstFour = address.substring(0, 6);
-    const lastFour = address.substring(address.length - 4);
-    return `${firstFour}...${lastFour}`;
-  };
-  const numberOfDices = 6;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const handleCardClick = (card) => {
+
+  const handleCardClick = async (card) => {
+    setShowLoading(true);
+
     setSelectedCard(card);
-    setIsModalOpen(true);
+    console.log(card);
+    listener(card.id);
+
+    try {
+      const res = await flowjs.roll(card.id, card.funds, currentUser.addr);
+      showSuccessSnack("Bet successfull...Rolling the Dices");
+
+      Object.values(res.events).forEach((event) => {
+        if (event.type === flowjs.eventsList().rollPublisherEvent) {
+          const outcomeData = {
+            outcome: event.data.outcome,
+            summationValue: event.data.summationValue,
+          };
+          if (event.data.outcome === "won") {
+            console.log("jeet gaya");
+          } else {
+            console.log("haar gaya");
+          }
+        }
+      });
+      setShowLoading(false);
+    } catch (err) {
+      console.log(err);
+      showErrorSnack("Could not place the bet");
+      setShowLoading(false);
+    }
+
+    // setIsModalOpen(true);
   };
-
+  const listener = (id) => {
+    console.log(flowjs.eventsList());
+    console.log(flowjs.eventsList().rollPublisherEvent);
+    fcl
+      .events(flowjs.eventsList().rollPublisherEvent)
+      .subscribe((eventData) => {
+        console.log(eventData);
+        if (eventData.id === parseFloat(id)) {
+          if (eventData.outcome === "won") {
+            console.log("jeet gaya");
+          }
+        }
+      });
+  };
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-
 
   return (
     <div className="event">
       <Navbar />
+      <Loader showLoading={showLoading} />
+
       <div className="ellipse" />
       <div className="event_header">
         <div className="flex w-full gap-4">
@@ -197,7 +181,12 @@ export default function EventPage() {
           </div>
         </div>
         <div className="event_header_right">
-          <div onClick={()=>setIsCreateOpen(true)} className="event_header_right_button">Create Event +</div>
+          <div
+            onClick={() => setIsCreateOpen(true)}
+            className="event_header_right_button"
+          >
+            Create Event +
+          </div>
         </div>
       </div>
       <div className="event_main">
@@ -254,7 +243,9 @@ export default function EventPage() {
           onClose={() => setIsModalOpen(false)}
         />
       )}
-      {isCreateOpen && (<CreateEventModal onClose={()=>setIsCreateOpen(false)}/>)}
+      {isCreateOpen && (
+        <CreateEventModal onClose={() => setIsCreateOpen(false)} />
+      )}
     </div>
   );
 }

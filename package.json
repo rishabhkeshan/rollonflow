@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.10.16",
     "@onflow/fcl": "^1.4.1",
     "@project-serum/anchor": "^0.26.0",

@@ -5,9 +5,13 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import "./CreateEventModal.scss";
 import FlowClient from "../../contracts/flowclient";
+import { useSnackbar } from "notistack";
+import Loader from "../Loader/Loader";
 
 function CreateEventModal({ event, onClose }) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [showLoading, setShowLoading] = useState(false);
+
   useEffect(() => {
     fcl.currentUser().subscribe((user) => {
       console.log("user", user);
@@ -19,18 +23,40 @@ function CreateEventModal({ event, onClose }) {
     });
   }, []);
   const flowjs = new FlowClient(currentUser);
-  console.log(currentUser);
-  console.log(fcl.currentUser);
   const [numDice, setNumDice] = useState(1);
   const [selectedOutcome, setSelectedOutcome] = useState("");
   const [outcomeValue, setOutcomeValue] = useState("");
   const [betAmount, setBetAmount] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
   const allOutcomes = ["<", "≤", "=", ">", "≥"];
   const totalDices = [1, 2, 3, 4, 5, 6];
   const [expiryDateTime, setExpiryDateTime] = useState(
     new Date(new Date().setMonth(new Date().getMonth() + 1))
   );
   const minExpDate = new Date(new Date().setDate(new Date().getDate() + 1));
+  const { enqueueSnackbar } = useSnackbar();
+  const showErrorSnack = (message) => {
+    enqueueSnackbar(message, {
+      variant: "error",
+      preventDuplicate: true,
+      autoHideDuration: 3000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
+  };
+  const showSuccessSnack = (message) => {
+    enqueueSnackbar(message, {
+      variant: "success",
+      preventDuplicate: true,
+      autoHideDuration: 3000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "right",
+      },
+    });
+  };
 
   const handleDiceClick = (diceValue) => {
     setNumDice(diceValue);
@@ -43,7 +69,17 @@ function CreateEventModal({ event, onClose }) {
     setSelectedOutcome(outcomeValue);
   };
   const handleOutcomeValueChange = (event) => {
-    setOutcomeValue(event.target.value);
+    const value = event.target.value;
+    const minValue = calculateMinValue();
+    const maxValue = calculateMaxValue();
+
+    if (value === "" || (value >= minValue && value <= maxValue)) {
+      setOutcomeValue(value);
+    } else {
+      showErrorSnack(
+        `Please enter a value between ${minValue} and ${maxValue}`
+      );
+    }
   };
 
   const calculateMinValue = () => {
@@ -56,25 +92,65 @@ function CreateEventModal({ event, onClose }) {
   const handleBetAmountChange = (e) => {
     setBetAmount(e.target.value);
   };
-  const handleCreateEvent = async () => {
-    // try {
-      const res = await flowjs.createDiceEvent(
-        numDice,
-        outcomeValue,
-        "<",
-        1000.0,
-        100.0,
-        currentUser.addr
-      );
-      // console.log(res);
-      console.log(res);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+  const validateForm = () => {
+    // Check if all fields are filled
+    if (
+      numDice &&
+      selectedOutcome &&
+      outcomeValue &&
+      betAmount &&
+      expiryDateTime
+    ) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
   };
+  const handleCreateEvent = async () => {
+    if (isFormValid) {
+      setShowLoading(true);
+
+      let operator = selectedOutcome;
+      if (selectedOutcome === "≤") {
+        operator = "<=";
+      } else if (selectedOutcome === "≥") {
+        operator = ">=";
+      }
+      const eventCloseTime = Math.floor(
+        (expiryDateTime.getTime() - new Date().getTime()) / 1000
+      );
+      try {
+        const res = await flowjs.createDiceEvent(
+          numDice,
+          outcomeValue,
+          operator,
+          eventCloseTime,
+          betAmount,
+          currentUser.addr
+        );
+
+        showSuccessSnack("Event created successfully");
+        onClose();
+        setShowLoading(false);
+      } catch (err) {
+        console.log(err);      
+        showErrorSnack("Could not create an event");
+
+        setShowLoading(false);
+      }
+    } else {
+      showErrorSnack("Please fill all the fields");
+    }
+  };
+
+  useEffect(() => {
+    validateForm();
+  }, [numDice, selectedOutcome, outcomeValue, betAmount, expiryDateTime]);
 
   return (
     <div className="createmodal">
+      <Loader showLoading={showLoading} />
+
       <div className="createmodal_content">
         <div className="createmodal_header">
           <h2 className="createmodal_header_title">Create Event</h2>
