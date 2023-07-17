@@ -10,7 +10,7 @@ class FlowClient {
 
   async createDiceEvent(dices, eventNumeric, operator, expirySeconds, amount, address) {
     const cadence = `
-    import RollOnFlow_v01 from ${this.rollOnFlow}
+    import RollOnFlow_v02 from ${this.rollOnFlow}
     import FungibleToken from ${this.fungibleToken}
     
     transaction {
@@ -22,7 +22,7 @@ class FlowClient {
       }
     
       execute {
-        log(RollOnFlow_v01.createEvent(numberOfDices: ${dices}, eventNumeric: ${eventNumeric}, operator: "${operator}", expirySeconds: ${parseFloat(
+        log(RollOnFlow_v02.createEvent(numberOfDices: ${dices}, eventNumeric: ${eventNumeric}, operator: "${operator}", expirySeconds: ${parseFloat(
       expirySeconds
     ).toFixed(1)}, amount: ${parseFloat(amount).toFixed(
       1
@@ -35,7 +35,7 @@ class FlowClient {
 
   async roll(eventID, amount, address) {
     const cadence = `
-    import RollOnFlow_v01 from ${this.rollOnFlow}
+    import RollOnFlow_v02 from ${this.rollOnFlow}
     import FungibleToken from ${this.fungibleToken}
     
     transaction {
@@ -45,7 +45,7 @@ class FlowClient {
         self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(amount).toFixed(1)})
       }
       execute {
-        log(RollOnFlow_v01.roll(eventId: ${eventID}, payment: <- self.paymentVault, address: ${address}))
+        log(RollOnFlow_v02.roll(eventId: ${eventID}, payment: <- self.paymentVault, address: ${address}))
       }
     }
     `
@@ -68,9 +68,9 @@ class FlowClient {
 
   async getAllEvents() {
     const cadence = `
-    import RollOnFlow_v01 from ${this.rollOnFlow}
-    pub fun main(): {UInt64: RollOnFlow_v01.Event} {
-        return RollOnFlow_v01.getAllEvents()
+    import RollOnFlow_v02 from ${this.rollOnFlow}
+    pub fun main(): [RollOnFlow_v02.Event] {
+        return RollOnFlow_v02.getLiveEvents()
     }
     `
     return await this.executeQuery(cadence)

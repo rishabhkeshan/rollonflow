@@ -1,21 +1,15 @@
 import FungibleToken from "FungibleToken"
 import FlowToken from "FlowToken"
 
-access(all) contract RollOnFlow_v01 {
-    pub fun generator(min: Int, max: Int): Int {
+access(all) contract RollOnFlow_v02 {
+    pub fun generator(min: Int, max: Int, randomizer: Int): Int {
         let currentBlock = getCurrentBlock().height
-        let randomSeed = UInt64(currentBlock + UInt64(getCurrentBlock().timestamp))
+        let randomSeed = UInt64(currentBlock + UInt64(getCurrentBlock().timestamp) + UInt64(randomizer))
         let random = (randomSeed % UInt64(max - min + 1)) + UInt64(min)
         return Int(random)
     }
-    access(all) struct Dices {
-        pub var d1: Int
-        pub var d2: Int
-        pub var d3: Int
-        pub var d4: Int
-        pub var d5: Int
-        pub var d6: Int
-    }
+
+
     access(all) struct Event {
         pub var id: UInt64
         pub var numberOfDices: Int
@@ -23,6 +17,8 @@ access(all) contract RollOnFlow_v01 {
         pub var operator: String
         pub var funds: UFix64
         pub var eventCreator: Address
+        pub var dices: [Int]
+        pub var expired: Bool
         pub var expiry: UFix64
 
         init(id: UInt64, numberOfDices: Int, eventNumeric: Int, operator: String, funds: UFix64, eventCreator: Address, expiry: UFix64) {
@@ -33,6 +29,16 @@ access(all) contract RollOnFlow_v01 {
             self.operator = operator
             self.funds = funds
             self.expiry = expiry
+            self.expired = false
+            self.dices = [0,0,0,0,0,0]
+        }
+
+        pub fun setDices(newDices: [Int]) {
+            self.dices = newDices
+        }
+
+        pub fun eventExpired() {
+            self.expired = true
         }
     }
 
@@ -51,7 +57,7 @@ access(all) contract RollOnFlow_v01 {
         }
     }
 
-    access(all) event RollPublisher(id: UInt64, winner: Address, outcome: String, generatedNumeric: Int)
+    access(all) event RollPublisher(id: UInt64, winner: Address, outcome: String, sum: Int, dices: [Int])
     access(all) event PayementPublisher(id: UInt64, amount: UFix64, winner: Address)
     access(all) event RoulettePublisher(address: Address, result: Int, outcome: String, type: String)
 
@@ -79,15 +85,17 @@ access(all) contract RollOnFlow_v01 {
         operator: String,
         expirySeconds: UFix64,
         amount: UFix64,
-        payment: @FungibleToken.Vault
+        payment: @FungibleToken.Vault,
+        address: Address
         ) {
-        let address = payment.owner!.address
         let vaultRef = getAccount(self.account.address).getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
             .borrow()
             ?? panic("Could not borrow reference to the Vault")
         vaultRef.deposit(from: <- payment)
+            
         let currentBlockTime = getCurrentBlock().timestamp
         let expiry = currentBlockTime.saturatingAdd(expirySeconds)
+
 
         let newBet: Event = Event(
             id: self.eventCounter + 1,
@@ -106,6 +114,18 @@ access(all) contract RollOnFlow_v01 {
         return self.events
     }
 
+    pub fun getLiveEvents(): [Event] {
+        var live: [Event] = []
+        for key in self.events.keys {
+            let value = self.events[key]
+            let currentBlockTime = getCurrentBlock().timestamp
+            if value!.expiry > currentBlockTime && !(value!.expired) {
+                live.append(value!)
+            }
+        }
+        return live
+    }
+
     pub fun getEvent(eventId: UInt64): Event? {
         return self.events[eventId]
     }
@@ -122,8 +142,7 @@ access(all) contract RollOnFlow_v01 {
         return self.eventOutcome[eventId]
     }
 
-    pub fun roll(eventId: UInt64, payment: @FungibleToken.Vault) {
-        let address = payment.owner!.address
+    pub fun roll(eventId: UInt64, payment: @FungibleToken.Vault, address: Address) {
         let balance = payment.balance
         let vaultRef = getAccount(self.account.address).getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
             .borrow()
@@ -132,61 +151,75 @@ access(all) contract RollOnFlow_v01 {
 
 
         let eventData = self.events[eventId]
+        
         // check if event is valid
         assert(eventData != nil, message: "Event does not exists")
-        let calculatedMax = eventData!.numberOfDices * 6;
-        let generatedNumeric = self.generator(min: eventData!.numberOfDices, max: calculatedMax)
+        let currentBlockTime = getCurrentBlock().timestamp
+        assert(eventData!.expiry > currentBlockTime , message: "Event has expired")
+
+        var a = 0
+        var sum = 0
+        var newDices: [Int] = []
+        while a < eventData!.numberOfDices {
+            let generatedNumeric = self.generator(min: 1, max: 6, randomizer: a)
+            newDices.insert(at: a, generatedNumeric)
+            sum = sum + generatedNumeric
+            a = a+1
+        }
+        eventData!.setDices(newDices: newDices)
+        eventData!.eventExpired()
         // check if creator is winner
         var winner = 0
         let op = eventData!.operator
         let numeric = eventData!.eventNumeric
         if op == "=" {
-            if generatedNumeric == numeric {
+            if sum == numeric {
                 winner = 1
             }
         } else if op == ">" {
-            if generatedNumeric > numeric {
+            if sum > numeric {
                 winner = 1
             }
         } else if op == "<" {
-            if generatedNumeric < numeric {
+            if sum < numeric {
                 winner = 1
             }
         } else if op == ">=" {
-            if generatedNumeric >= numeric {
+            if sum >= numeric {
                 winner = 1
             }
         } else if op == "<=" {
-            if generatedNumeric <= numeric {
+            if sum <= numeric {
                 winner = 1
             }
         }
 
         if winner == 1 {
         // creator won
-            let eventOutcome = EventOutcome(id: eventData!.id, winner: eventData!.eventCreator, outcome: "won", generatedNumeric: generatedNumeric)
+            let eventOutcome = EventOutcome(id: eventData!.id, winner: eventData!.eventCreator, outcome: "won", generatedNumeric: sum)
             self.eventOutcome[eventId] = eventOutcome
             self.send(to: eventData!.eventCreator, amount: eventData!.funds.saturatingAdd(balance))
             emit PayementPublisher(id: eventData!.id, amount: eventData!.funds.saturatingAdd(balance), winner: eventData!.eventCreator)
-            emit RollPublisher(id: eventData!.id, winner: eventData!.eventCreator, outcome: "won", generatedNumeric: generatedNumeric)
+            emit RollPublisher(id: eventData!.id, winner: eventData!.eventCreator, outcome: "won", sum: sum, dices: eventData!.dices)
         } else {
-            let eventOutcome = EventOutcome(id: eventData!.id, winner: address, outcome: "lost", generatedNumeric: generatedNumeric)
+            let eventOutcome = EventOutcome(id: eventData!.id, winner: address, outcome: "lost", generatedNumeric: sum)
             self.eventOutcome[eventId] = eventOutcome
             self.send(to: address, amount: eventData!.funds.saturatingAdd(balance))
             emit PayementPublisher(id: eventData!.id, amount: eventData!.funds.saturatingAdd(balance), winner: address)
-            emit RollPublisher(id: eventData!.id, winner: address, outcome: "lost", generatedNumeric: generatedNumeric)
+            emit RollPublisher(id: eventData!.id, winner: address, outcome: "lost", sum: sum, dices: eventData!.dices)
         }
+        // setting back updated event data
+        self.events[eventData!.id] = eventData
     }
 
-    pub fun roulette(eventType: String, numeric: Int,  payment: @FungibleToken.Vault): Int {
-        let address = payment.owner!.address
+    pub fun roulette(eventType: String, numeric: Int,  payment: @FungibleToken.Vault, address: Address): Int {
         let balance = payment.balance
         let vaultRef = getAccount(self.account.address).getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
             .borrow()
             ?? panic("Could not borrow reference to the Vault")
         vaultRef.deposit(from: <- payment)
 
-        let generatedNumeric = self.generator(min: 1, max: 36)
+        let generatedNumeric = self.generator(min: 1, max: 36, randomizer: 5)
         var winner = 0
         if eventType == "even" {
             if generatedNumeric % 2 == 0 {
@@ -252,6 +285,4 @@ access(all) contract RollOnFlow_v01 {
             ?? panic("Could not borrow reference to the Vault")
         vaultRef.deposit(from: <- mainFlowVault.withdraw(amount: amount))
     }
-
-
 }

@@ -22,9 +22,9 @@ export default function EventPage() {
           let orderBookData = []
           setCurrentUser(user);
           const flowjs = new FlowClient(user);
-          const res = await flowjs.getAllEvents();
-          console.log(res)
-          Object.values(res).forEach((res) => {
+          const response = await flowjs.getAllEvents();
+          console.log(response)
+          response.forEach((res) => {
             var date = new Date(parseFloat(res.expiry * 1000))
             const obj = {
               walletAddress: res.eventCreator,
