@@ -8,9 +8,9 @@ class FlowClient {
   }
 
 
-  async createDiceEvent(dices, eventNumeric, operator, expirySeconds, amount) {
+  async createDiceEvent(dices, eventNumeric, operator, expirySeconds, amount, address) {
     const cadence = `
-    import RollOnFlow from ${this.rollOnFlow}
+    import RollOnFlow_v01 from ${this.rollOnFlow}
     import FungibleToken from ${this.fungibleToken}
     
     transaction {
@@ -18,30 +18,34 @@ class FlowClient {
     
       prepare(acct: AuthAccount) {
         let mainFlowVault = acct.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault) ?? panic("cannot borrow flowtoken valut from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: 0.1)
+        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(amount).toFixed(1)})
       }
     
       execute {
-        log(RollOnFlow.createEvent(numberOfDices: ${dices}, eventNumeric: ${eventNumeric}, operator: "${operator}", expirySeconds: ${expirySeconds}, amount: ${amount}, payment: <- self.paymentVault))
+        log(RollOnFlow_v01.createEvent(numberOfDices: ${dices}, eventNumeric: ${eventNumeric}, operator: "${operator}", expirySeconds: ${parseFloat(
+      expirySeconds
+    ).toFixed(1)}, amount: ${parseFloat(amount).toFixed(
+      1
+    )}, payment: <- self.paymentVault, address: ${address}))
       }
     }
-    `
+    `;
     return await this.executeMutation(cadence)
   }
 
-  async roll(eventID) {
+  async roll(eventID, amount, address) {
     const cadence = `
-    import RollOnFlow from ${this.rollOnFlow}
+    import RollOnFlow_v01 from ${this.rollOnFlow}
     import FungibleToken from ${this.fungibleToken}
     
     transaction {
       let paymentVault: @FungibleToken.Vault
       prepare(acct: AuthAccount) {
         let mainFlowVault = acct.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault) ?? panic("cannot borrow flowtoken valut from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: 0.1)
+        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(amount).toFixed(1)})
       }
       execute {
-        log(RollOnFlow.roll(eventId: ${eventID}, payment: <- self.paymentVault))
+        log(RollOnFlow_v01.roll(eventId: ${eventID}, payment: <- self.paymentVault, address: ${address}))
       }
     }
     `
@@ -64,9 +68,9 @@ class FlowClient {
 
   async getAllEvents() {
     const cadence = `
-    import RollOnFlow from ${this.rollOnFlow}
-    pub fun main(): {UInt64: RollOnFlow.Event} {
-        return RollOnFlow.getAllEvents()
+    import RollOnFlow_v01 from ${this.rollOnFlow}
+    pub fun main(): {UInt64: RollOnFlow_v01.Event} {
+        return RollOnFlow_v01.getAllEvents()
     }
     `
     return await this.executeQuery(cadence)

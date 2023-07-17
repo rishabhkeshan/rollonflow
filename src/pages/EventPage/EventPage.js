@@ -1,16 +1,50 @@
 import React, { useCallback, useEffect, useState } from "react";
+import * as fcl from "@onflow/fcl";
 import Navbar from "../../components/Navbar/Navbar";
 import EventImage from "../../assets/event_image.svg";
 import TagPurple from "../../assets/tag_purple.svg";
 import Dropdown from "../../assets/dropdown.svg";
 import Dropup from "../../assets/dropup.svg";
 import Dice from "react-dice-roll";
+import FlowClient from "../../contracts/flowclient";
+
 
 import "./EventPage.scss";
 import EventModal from "../../components/EventModal/EventModal";
 import CreateEventModal from "../../components/CreateEventModal/CreateEventModal";
 
 export default function EventPage() {
+    const [currentUser, setCurrentUser] = useState(null);
+    useEffect(() => {
+      fcl.currentUser().subscribe(async (user) => {
+        console.log("user", user);
+        if (user.loggedIn) {
+          let orderBookData = []
+          setCurrentUser(user);
+          const flowjs = new FlowClient(user);
+          const res = await flowjs.getAllEvents();
+          console.log(res)
+          Object.values(res).forEach((res) => {
+            var date = new Date(parseFloat(res.expiry * 1000))
+            const obj = {
+              walletAddress: res.eventCreator,
+              numberOfDices: res.numberOfDices,
+              outcomeType: `${res.operator} ${res.eventNumeric}`,
+              betAmount: `${parseFloat(res.funds)} FLOW`,
+              expiryDateTime: date.toLocaleString("en-GB", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit", year: "numeric" }).replaceAll("/", "."),
+              blockHeight: 123456,
+              betAgainst: "Bet Against",
+            }
+            orderBookData.push(obj)
+          })
+          setAllEvents(orderBookData)
+        } else {
+          setCurrentUser(null);
+        }
+      });
+
+    }, []);
+  const [allEvents, setAllEvents] = useState([]);
   const onClick = async () => {};
   const cardData = {
     type: "Multi user",
@@ -168,7 +202,7 @@ export default function EventPage() {
       </div>
       <div className="event_main">
         <div className="event_main_cardscontainer">
-          {orderBookData.map((order, id) => (
+          {allEvents.map((order, id) => (
             <div key={id} className="event_main_cardscontainer_card">
               <div className="event_main_cardscontainer_card_left">
                 <div className="event_main_cardscontainer_card_left_text">

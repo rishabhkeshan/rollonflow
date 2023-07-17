@@ -1,20 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
+import * as fcl from "@onflow/fcl";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import "./CreateEventModal.scss";
+import FlowClient from "../../contracts/flowclient";
 
 function CreateEventModal({ event, onClose }) {
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    fcl.currentUser().subscribe((user) => {
+      console.log("user", user);
+      if (user.loggedIn) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+  }, []);
+  const flowjs = new FlowClient(currentUser);
+  console.log(currentUser);
+  console.log(fcl.currentUser);
   const [numDice, setNumDice] = useState(1);
-  const [selectedOutcome, setSelectedOutcome] = useState(""); 
+  const [selectedOutcome, setSelectedOutcome] = useState("");
   const [outcomeValue, setOutcomeValue] = useState("");
   const [betAmount, setBetAmount] = useState("");
   const allOutcomes = ["<", "≤", "=", ">", "≥"];
   const totalDices = [1, 2, 3, 4, 5, 6];
-  const [expiryDateTime, setExpiryDateTime] = useState(new Date(
-    new Date().setMonth(new Date().getMonth() + 1)
-  ));
-    const minExpDate = new Date(new Date().setDate(new Date().getDate() + 1));
+  const [expiryDateTime, setExpiryDateTime] = useState(
+    new Date(new Date().setMonth(new Date().getMonth() + 1))
+  );
+  const minExpDate = new Date(new Date().setDate(new Date().getDate() + 1));
 
   const handleDiceClick = (diceValue) => {
     setNumDice(diceValue);
@@ -26,20 +42,36 @@ function CreateEventModal({ event, onClose }) {
   const handleOutcomeClick = (outcomeValue) => {
     setSelectedOutcome(outcomeValue);
   };
-    const handleOutcomeValueChange = (event) => {
-      setOutcomeValue(event.target.value);
-    };
+  const handleOutcomeValueChange = (event) => {
+    setOutcomeValue(event.target.value);
+  };
 
-    const calculateMinValue = () => {
-      return numDice;
-    };
+  const calculateMinValue = () => {
+    return numDice;
+  };
 
-    const calculateMaxValue = () => {
-      return numDice * 6;
-    };
-    const handleBetAmountChange = (e)=>{
-      setBetAmount(e.target.value);
-    }
+  const calculateMaxValue = () => {
+    return numDice * 6;
+  };
+  const handleBetAmountChange = (e) => {
+    setBetAmount(e.target.value);
+  };
+  const handleCreateEvent = async () => {
+    // try {
+      const res = await flowjs.createDiceEvent(
+        numDice,
+        outcomeValue,
+        "<",
+        1000.0,
+        100.0,
+        currentUser.addr
+      );
+      // console.log(res);
+      console.log(res);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
 
   return (
     <div className="createmodal">
@@ -125,7 +157,10 @@ function CreateEventModal({ event, onClose }) {
             </div>
           </div>
           <div className="createmodal_body_submitcontainer">
-            <div className="createmodal_body_submitcontainer_button">
+            <div
+              onClick={handleCreateEvent}
+              className="createmodal_body_submitcontainer_button"
+            >
               Create Event
             </div>
           </div>
