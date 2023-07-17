@@ -18,6 +18,7 @@ export default function EventPage() {
   const [currentUser, setCurrentUser] = useState(null);
 
   const [showLoading, setShowLoading] = useState(false);
+  const [outcome, setOutcome] = useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
   const showErrorSnack = (message) => {
@@ -44,6 +45,10 @@ export default function EventPage() {
   };
 
   useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
     fcl.currentUser().subscribe(async (user) => {
       console.log("user", user);
       if (user.loggedIn) {
@@ -56,16 +61,19 @@ export default function EventPage() {
         console.log(response);
         response.forEach((res) => {
           var date = new Date(parseFloat(res.expiry * 1000));
+          let operator = res.operator;
           if (res.operator === "<=") {
-            res.operator = "≤";
+            operator = "≤";
           } else if (res.operator === ">=") {
-            res.operator = "≥";
+            operator = "≥";
           }
           const obj = {
             id: res.id,
             walletAddress: res.eventCreator,
             numberOfDices: res.numberOfDices,
-            outcomeType: `${res.operator} ${res.eventNumeric}`,
+            outcomeType: `${operator} ${res.eventNumeric}`,
+            operator: res.operator,
+            operatorValue: res.eventNumeric,
             funds: parseFloat(res.funds).toFixed(1),
             betAmount: `${parseFloat(res.funds)} FLOW`,
             expiryDateTime: date
@@ -89,11 +97,17 @@ export default function EventPage() {
         setCurrentUser(null);
       }
     });
-  }, []);
+  };
   const flowjs = new FlowClient(currentUser);
 
   const [allEvents, setAllEvents] = useState([]);
-  const onClick = async () => {};
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
   const cardData = {
     type: "Multi user",
     name: "Roll the Dice",
@@ -111,6 +125,16 @@ export default function EventPage() {
     setSelectedCard(card);
     console.log(card);
     listener(card.id);
+    // const outcomeData = {
+    //   winner: "0x02f52a27fc97435a",
+    //   outcome: "lost",
+    //   sum: "11",
+    //   operator: card.operator,
+    //   operatorValue: card.operatorValue,
+    //   diceValues: ["5", "6"],
+    // };
+    // setOutcome(outcomeData);
+    // setIsModalOpen(true);
 
     try {
       const res = await flowjs.roll(card.id, card.funds, currentUser.addr);
@@ -118,10 +142,18 @@ export default function EventPage() {
 
       Object.values(res.events).forEach((event) => {
         if (event.type === flowjs.eventsList().rollPublisherEvent) {
+          console.log("hello");
           const outcomeData = {
             outcome: event.data.outcome,
-            summationValue: event.data.summationValue,
+            sum: event.data.sum,
+            diceValues: shuffleArray(event.data.dices),
+            winner: event.data.winner,
+            operator: card.operator,
+            operatorValue: card.operatorValue,
           };
+          setOutcome(outcomeData);
+          setIsModalOpen(true);
+
           if (event.data.outcome === "won") {
             console.log("jeet gaya");
           } else {
@@ -135,8 +167,6 @@ export default function EventPage() {
       showErrorSnack("Could not place the bet");
       setShowLoading(false);
     }
-
-    // setIsModalOpen(true);
   };
   const listener = (id) => {
     console.log(flowjs.eventsList());
@@ -237,14 +267,22 @@ export default function EventPage() {
           ))}
         </div>
       </div>
-      {isModalOpen && selectedCard && (
+      {isModalOpen && outcome && (
         <EventModal
-          event={selectedCard}
-          onClose={() => setIsModalOpen(false)}
+          outcome={outcome}
+          onClose={() => {
+            setIsModalOpen(false);
+            getData();
+          }}
         />
       )}
       {isCreateOpen && (
-        <CreateEventModal onClose={() => setIsCreateOpen(false)} />
+        <CreateEventModal
+          onClose={() => {
+            setIsCreateOpen(false);
+            getData();
+          }}
+        />
       )}
     </div>
   );

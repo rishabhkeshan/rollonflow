@@ -1,25 +1,24 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import Dice from "react-dice-roll";
 
 import "./EventModal.scss";
 
-function EventModal({ event, onClose }) {
+function EventModal({ outcome, onClose }) {
   const [diceContainerClass, setDiceContainerClass] = useState(
     "cover_modal_body_dicecontainer_2x3"
   );
-  const [numDices, setNumDices] = useState([
-    { value: 2, disabled: false },
-    { value: 5, disabled: false },
-    { value: 6, disabled: false },
-  ]);
+  const [outcomeObj, setOutcomeObj] = useState({...outcome, disabled: false});
   const [rollTime, setRollTime] = useState(1000);
+    console.log(outcome);
 
-  const operator = "<";
-  const outcomeValue = 12;
+  const operator = outcome?.operator;
+  console.log(operator);
+  const outcomeValue = parseInt(outcome?.operatorValue);
   const [winningOutcome, setWinningOutcome] = useState(null);
   const [calculatedOutcome, setCalculatedOutcome] = useState(0);
   const bet = () => {
     const diceButtons = document.querySelectorAll("#dice-wrapper button");
+    console.log("db",diceButtons);
     diceButtons.forEach((button) => button.click());
     setRollTime(1000);
     setTimeout(() => {
@@ -27,17 +26,22 @@ function EventModal({ event, onClose }) {
     }, 1100);
   };
   useEffect(() => {
-    if (numDices.length === 5 || numDices.length === 6) {
+    if (outcomeObj.length === 5 || outcomeObj.length === 6) {
       setDiceContainerClass("cover_modal_body_dicecontainer_3x2");
-    } else if (numDices.length <= 2) {
+    } else if (outcomeObj.length <= 2) {
       setDiceContainerClass("cover_modal_body_dicecontainer_1x2");
     } else {
       setDiceContainerClass("cover_modal_body_dicecontainer_2x3");
     }
-  }, [numDices]);
+  }, [outcomeObj]);
+ useLayoutEffect(() => {
+       setTimeout(() => {
+         bet();
+       }, 1100); // Execute the `bet` function after the component has mounted
+ }, []);
 
   const calculateOutcome = () => {
-    const summation = numDices.reduce((total, dice) => total + dice.value, 0);
+    const summation = outcomeObj.diceValues.reduce((total, dice) => total + parseInt(dice), 0);
     let outcome = false;
     console.log(summation);
     if (operator === "<") {
@@ -53,7 +57,9 @@ function EventModal({ event, onClose }) {
     }
     setCalculatedOutcome(summation);
     setWinningOutcome(outcome);
+    setOutcomeObj({...outcomeObj, disabled:true})
     console.log(outcome);
+
   };
   return (
     <div className="cover_modal">
@@ -89,17 +95,16 @@ function EventModal({ event, onClose }) {
                 : ""
             }`}
           >
-            {numDices.map((dice, index) => (
+            {outcomeObj.diceValues.map((dice, index) => (
               <Dice
                 rollingTime={rollTime}
                 size={180}
-                disabled={dice.disabled}
-                cheatValue={dice.value}
+                disabled={outcomeObj.disabled}
+                cheatValue={parseInt(dice)}
                 onRoll={(value) => console.log(value)}
               />
             ))}
           </div>
-          <button onClick={bet}>bet</button>
           <div className="cover_modal_body_textcontainer cover_modal_body_textcontainer_margin">
             <div className="cover_modal_body_textcontainer_text">
               Your winning outcome:
