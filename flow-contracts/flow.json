@@ -1,0 +1,46 @@
+{
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"contracts": {
+		"FungibleToken": {
+            "aliases": {
+                "emulator": "0xee82856bf20e2aa6",
+                "testnet": "0x9a0766d93b6608b7",
+                "mainnet": "0xf233dcee88fe0abe"
+            }
+        },
+		"FlowToken": {
+			"aliases": {
+				"emulator": "0x0ae53cb6e3f42a79",
+				"testnet": "0x7e60df042a9c0868",
+				"mainnet": "0x1654653399040a61"
+			}
+		},
+		"RollOnFlow_v0.1": {
+			"source": "./rollonflow.cdc",
+			"aliases": {
+				"testnet": "0x995a5c89574e5e95"
+			}
+		}
+
+	},
+	"deployments": {
+		"testnet": {
+		  "testnet-account": ["RollOnFlow_v0.1"]
+		}
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "8ef98c11aa6166147cecd1c6f2f308ab2bc54a4db56baceeb3476b7ffce8d1d3"
+		},
+		"testnet-account": {
+			"address": "0x995a5c89574e5e95",
+			"key": ""
+		}
+	}
+}
