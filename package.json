@@ -20,6 +20,7 @@
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.19",
     "react": "^18.2.0",
+    "react-custom-roulette": "^1.4.1",
     "react-datepicker": "^4.15.0",
     "react-datetime-picker": "^5.2.0",
     "react-dice-roll": "^1.2.2",
