@@ -35,13 +35,19 @@
       height: 50px;
     }
     &_connectwallet {
-      @apply rounded-md px-3 py-2 items-center font-medium text-sm;
+      @apply rounded-md cursor-pointer px-3 py-2 items-center font-medium text-sm;
       background: var(--material-90, #1d1d1d);
       color: var(--text-grey, #dadada);
       border: 1px;
         border-image-slice: 1;
 
         border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+    }
+    &_useraddress {
+      @apply rounded-md cursor-pointer px-3 py-2 items-center font-medium text-sm;
+      background: #0DCD8A;
+      color: var(--text-grey, #ffffff);
+      border: 1px;
     }
   }
 }
