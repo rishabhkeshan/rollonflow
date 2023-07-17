@@ -95,6 +95,16 @@ class FlowClient {
     return await this.executeQuery(cadence)
   }
 
+  async getBalance() {
+    const cadence = `
+    import RollOnFlow_v02 from ${this.rollOnFlow}
+    pub fun main(): [RollOnFlow_v02.Event] {
+        return RollOnFlow_v02.getBalance()
+    }
+    `
+    return await this.executeQuery(cadence)
+  }
+
   eventsList() {
     const mapper = {}
     const contractAddress = "995a5c89574e5e95";
