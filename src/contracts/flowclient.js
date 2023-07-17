@@ -52,6 +52,25 @@ class FlowClient {
     return await this.executeMutation(cadence)    
   }
 
+  async roulette(eventType, numeric, amount, address) {
+    const cadence = `
+    import RollOnFlow_v02 from ${this.rollOnFlow}
+    import FungibleToken from ${this.fungibleToken}
+    
+    transaction {
+      let paymentVault: @FungibleToken.Vault
+      prepare(acct: AuthAccount) {
+        let mainFlowVault = acct.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault) ?? panic("cannot borrow flowtoken valut from acct storage")
+        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(amount).toFixed(1)})
+      }
+      execute {
+        log(RollOnFlow_v02.roulette(eventType: "${eventType}", numeric: ${numeric}, payment: <- self.paymentVault, address: ${address}))
+      }
+    }
+    `
+    return await this.executeMutation(cadence)    
+  }
+
   async helloWorld() {
     const cadence = `
     transaction {
