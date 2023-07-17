@@ -126,7 +126,7 @@ export default function EventPage() {
     const lastFour = address.substring(address.length - 4);
     return `${firstFour}...${lastFour}`;
   };
-  const numberOfDices = 6; // Replace with the actual number of dices
+  const numberOfDices = 6;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
