@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import * as fcl from "@onflow/fcl";
 
 fcl.config({
-  "app.detail.icon": "https://placekitten.com/g/200/200",
-  "app.detail.title": "Kitten Dapp",
+  "app.detail.icon": "https://cdn-icons-png.flaticon.com/512/1232/1232342.png",
+  "app.detail.title": "Roll on Flow",
   "accessNode.api": "https://rest-testnet.onflow.org",
   // "discovery.authn.include": ["0x9d2e44203cb13051"],
   "discovery.authn.endpoint":
@@ -46,14 +46,12 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="navbar_navigationcontainer">
-        <Link to="/markets" className="navbar_navigationcontainer_nav">
-          {/* <img src={Markets} alt="markets" /> */}
+        <Link to="/" className="navbar_navigationcontainer_nav">
           <div>Games</div>
         </Link>
-        <Link to="/leaderboard" className="navbar_navigationcontainer_nav">
-          {/* <img src={Leaderboard} alt="leaderboard" /> */}
-          <div>Leaderboard</div>
-        </Link>
+        <a rel="noreferrer" target="_blank" href="https://github.com/rishabhkeshan/rollonflow" className="navbar_navigationcontainer_nav">
+          <div>GitHub</div>
+        </a>
         <div className="navbar_navigationcontainer_separator" />
         {userAddress ? (
           <div

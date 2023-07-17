@@ -98,7 +98,7 @@ class FlowClient {
   eventsList() {
     const mapper = {}
     const contractAddress = "995a5c89574e5e95";
-    const contractName = "RollOnFlow_v01";
+    const contractName = "RollOnFlow_v02";
     const rollPublisher = "RollPublisher";
     const paymentPublisher = "PaymentPublisher";
     const roulettePublisher = "RoulettePublisher";
@@ -116,7 +116,7 @@ class FlowClient {
       proposer: fcl.currentUser,
       payer: fcl.currentUser,
       authorizations: [fcl.currentUser],
-      limit: 50,
+      limit: 100,
     });
     const transaction = await fcl.tx(transactionId).onceSealed();
     console.log(transaction);

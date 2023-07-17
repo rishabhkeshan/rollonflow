@@ -40,10 +40,6 @@ function CreateEventModal({ event, onClose }) {
       variant: "error",
       preventDuplicate: true,
       autoHideDuration: 3000,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
     });
   };
   const showSuccessSnack = (message) => {
@@ -51,10 +47,6 @@ function CreateEventModal({ event, onClose }) {
       variant: "success",
       preventDuplicate: true,
       autoHideDuration: 3000,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
     });
   };
 
@@ -93,7 +85,6 @@ function CreateEventModal({ event, onClose }) {
     setBetAmount(e.target.value);
   };
   const validateForm = () => {
-    // Check if all fields are filled
     if (
       numDice &&
       selectedOutcome &&

@@ -3,6 +3,9 @@ import "./LandingPage.scss";
 import Navbar from "../../components/Navbar/Navbar";
 import MarketsContainer from "../../components/GamesContainer/GamesContainer";
 import { Link } from "react-router-dom";
+import LandingBanner from "../../assets/landingbanner.svg";
+
+
 
 export default function LandingPage() {
 
@@ -10,14 +13,17 @@ export default function LandingPage() {
     <article className="landing">
       <Navbar />
       <section className="landing_main">
+        <img
+          src={LandingBanner}
+          className="landing_main_banner"
+          alt="landing banner"
+        />
         <div className="landing_main_content">
           <div className="landing_main_content_markets">
-            <div className="landing_main_content_markets_title">
-              Games
-            </div>
+            <div className="landing_main_content_markets_title">Games</div>
             <MarketsContainer />
           </div>
-          <div className="landing_main_content_footer">
+          {/* <div className="landing_main_content_footer">
             <div className="landing_main_content_footer_left">
               <Link to="/" className="landing_main_content_footer_left_logo">
                 Roll on Flow
@@ -46,7 +52,7 @@ export default function LandingPage() {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </article>

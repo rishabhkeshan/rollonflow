@@ -7,6 +7,7 @@ import Dropdown from "../../assets/dropdown.svg";
 import Dropup from "../../assets/dropup.svg";
 import Dice from "react-dice-roll";
 import FlowClient from "../../contracts/flowclient";
+import NoCoversImage from "../../assets/nocovers.svg";
 
 import "./EventPage.scss";
 import EventModal from "../../components/EventModal/EventModal";
@@ -26,10 +27,6 @@ export default function EventPage() {
       variant: "error",
       preventDuplicate: true,
       autoHideDuration: 3000,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
     });
   };
   const showSuccessSnack = (message) => {
@@ -37,10 +34,6 @@ export default function EventPage() {
       variant: "success",
       preventDuplicate: true,
       autoHideDuration: 3000,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
     });
   };
 
@@ -220,53 +213,65 @@ export default function EventPage() {
         </div>
       </div>
       <div className="event_main">
-        <div className="event_main_cardscontainer">
-          {allEvents.map((order, id) => (
-            <div key={id} className="event_main_cardscontainer_card">
-              <div className="event_main_cardscontainer_card_left">
-                <div className="event_main_cardscontainer_card_left_text">
-                  Against
+        {allEvents.length >= 1 && (
+          <div className="event_main_cardscontainer">
+            {allEvents.map((order, id) => (
+              <div key={id} className="event_main_cardscontainer_card">
+                <div className="event_main_cardscontainer_card_left">
+                  <div className="event_main_cardscontainer_card_left_text">
+                    Against
+                  </div>
+                  <div className="event_main_cardscontainer_card_left_value">
+                    {order.outcomeType}
+                  </div>
                 </div>
-                <div className="event_main_cardscontainer_card_left_value">
-                  {order.outcomeType}
+                <div className="event_main_cardscontainer_card_right">
+                  <div className="event_main_cardscontainer_card_right_box">
+                    <div className="event_main_cardscontainer_card_right_box_text">
+                      No. of Dices:
+                    </div>
+                    <div className="event_main_cardscontainer_card_right_box_value">
+                      {order.numberOfDices}
+                    </div>
+                  </div>
+                  <div className="event_main_cardscontainer_card_right_box">
+                    <div className="event_main_cardscontainer_card_right_box_text">
+                      Amount:
+                    </div>
+                    <div className="event_main_cardscontainer_card_right_box_value">
+                      {order.betAmount}
+                    </div>
+                  </div>
+                  <div className="event_main_cardscontainer_card_right_box">
+                    <div className="event_main_cardscontainer_card_right_box_text">
+                      Expiry Time:
+                    </div>
+                    <div className="event_main_cardscontainer_card_right_box_value">
+                      {order.expiryDateTime}
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => handleCardClick(order)}
+                    className="event_main_cardscontainer_card_right_box_roll"
+                  >
+                    Roll
+                  </div>
                 </div>
               </div>
-              <div className="event_main_cardscontainer_card_right">
-                <div className="event_main_cardscontainer_card_right_box">
-                  <div className="event_main_cardscontainer_card_right_box_text">
-                    No. of Dices:
-                  </div>
-                  <div className="event_main_cardscontainer_card_right_box_value">
-                    {order.numberOfDices}
-                  </div>
-                </div>
-                <div className="event_main_cardscontainer_card_right_box">
-                  <div className="event_main_cardscontainer_card_right_box_text">
-                    Amount:
-                  </div>
-                  <div className="event_main_cardscontainer_card_right_box_value">
-                    {order.betAmount}
-                  </div>
-                </div>
-                <div className="event_main_cardscontainer_card_right_box">
-                  <div className="event_main_cardscontainer_card_right_box_text">
-                    Expiry Time:
-                  </div>
-                  <div className="event_main_cardscontainer_card_right_box_value">
-                    {order.expiryDateTime}
-                  </div>
-                </div>
-                <div
-                  onClick={() => handleCardClick(order)}
-                  className="event_main_cardscontainer_card_right_box_roll"
-                >
-                  Roll
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
+      {(allEvents === null || allEvents.length === 0) && (
+        <div className="no-covers-container">
+          <img
+            src={NoCoversImage}
+            alt="No Covers"
+            className="no-covers-image"
+          />
+          <p className="no-covers-text">No Bets Found</p>
+        </div>
+      )}
       {isModalOpen && outcome && (
         <EventModal
           outcome={outcome}

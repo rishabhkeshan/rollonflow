@@ -7,7 +7,7 @@
       width: 100%;
     }
     &_header {
-      @apply relative gap-10 px-6 py-3 items-center justify-center border-b overflow-x-auto;
+      @apply relative gap-10 px-6 py-2 items-center justify-center border-b overflow-x-auto;
       border-color: #494949;
       &::-webkit-scrollbar{
         display: none;
@@ -21,7 +21,7 @@
       }
     }
     &_cardscontainer {
-      @apply flex flex-col mt-2 w-full;
+      @apply flex flex-col w-full;
       &_filters {
         @apply flex flex-row gap-4;
         &_filter {

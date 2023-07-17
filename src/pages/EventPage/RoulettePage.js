@@ -70,9 +70,12 @@ export default function RoulettePage() {
   const onClick = async () => {};
   const [mustSpin, setMustSpin] = useState(false);
   const [outcome, setOutcome] = useState(0);
+  const [spinOutcome, setSpinOutcome] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
   const [showLoading, setShowLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [showOutcome, setShowOutcome] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     fcl.currentUser().subscribe((user) => {
@@ -91,10 +94,6 @@ export default function RoulettePage() {
       variant: "error",
       preventDuplicate: true,
       autoHideDuration: 3000,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
     });
   };
   const showSuccessSnack = (message) => {
@@ -102,10 +101,6 @@ export default function RoulettePage() {
       variant: "success",
       preventDuplicate: true,
       autoHideDuration: 3000,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
     });
   };
 
@@ -129,6 +124,18 @@ export default function RoulettePage() {
   const handleBetTypeClick = (betType) => {
     setSelectedBet(betType);
   };
+  const validateForm = () => {
+    if (selectedBet && amountInput) {
+      if (selectedBet === "higher" || selectedBet === "lower") {
+        higherLowerInput && setIsFormValid(true);
+      } else setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  };
+  useEffect(() => {
+    validateForm();
+  }, [selectedBet, amountInput, higherLowerInput]);
 
   const handleHigherLowerInputChange = (e) => {
     const inputValue = e.target.value;
@@ -142,33 +149,54 @@ export default function RoulettePage() {
     setAmountInput(e.target.value);
   };
 
-  const handlePlaceBetClick = async() => {
-
-    let betType = selectedBet;
-    if(selectedBet==="higher")
-    betType ="high";
-    if(selectedBet==="lower")
-    betType ="low";
-
+  const handlePlaceBetClick = async () => {
+    if (isFormValid) {
+      setShowLoading(true);
+      setShowLoading(true);
+      let betType = selectedBet;
+      if (selectedBet === "higher") betType = "high";
+      if (selectedBet === "lower") betType = "low";
+      let betNumber = higherLowerInput === "" ? 0 : parseInt(higherLowerInput);
+      console.log(betType, higherLowerInput, amountInput, currentUser.addr);
       try {
         const res = await flowjs.roulette(
           betType,
-          higherLowerInput,
+          betNumber,
           amountInput,
           currentUser.addr
         );
         console.log(res);
-        showSuccessSnack("Event created successfully");
-        setShowLoading(false);
+        Object.values(res.events).forEach((event) => {
+          if (event.type === flowjs.eventsList().roulettePublisherEvent) {
+            setSpinOutcome(event.data);
+            const resultIndex = data.findIndex(
+              (item) => item.option === event.data.result
+            );
+            setOutcome(resultIndex);
+            setShowLoading(false);
+            setMustSpin(true);
+          }
+        });
+        //   const _outcome = {
+        //     address: "0x02f52a27fc97435a",
+        //     result: "30",
+        //     outcome: "won",
+        //     type: "red",
+        //   };
+
+        //   setSpinOutcome(_outcome);
       } catch (err) {
-        console.log(err);      
+        console.log(err);
         showErrorSnack("Could not create a bet");
 
         setShowLoading(false);
       }
-    console.log("Selected Bet:", selectedBet);
-    console.log("Higher/Lower Input:", higherLowerInput);
-    console.log("Amount Input:", amountInput);
+      console.log("Selected Bet:", selectedBet);
+      console.log("Higher/Lower Input:", higherLowerInput);
+      console.log("Amount Input:", amountInput);
+    } else {
+      showErrorSnack("Please fill all the fields");
+    }
   };
   return (
     <div className="event">
@@ -190,14 +218,11 @@ export default function RoulettePage() {
                 {" "}
                 {cardData.type}
               </div>
-              <div className="event_header_detailscontainer_other_detail">
-                $ {cardData.volume}
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="event_main">
+      <div className="event_main pb-24">
         <div className="event_main_left">
           <Wheel
             mustStartSpinning={mustSpin}
@@ -217,16 +242,33 @@ export default function RoulettePage() {
             textDistance={textDistance}
             onStopSpinning={() => {
               setMustSpin(false);
+              if (spinOutcome.outcome === "won") {
+                showSuccessSnack("Hurray! You won the bet.");
+              }
+              if (spinOutcome.outcome === "lost") {
+                showErrorSnack("Sorry! You lost the bet.");
+              }
+              setShowOutcome(spinOutcome);
             }}
           />
-          <button className={"spin-button"} onClick={handleSpinClick}>
-            SPIN
-          </button>
+          <div
+            className={`event_main_left_outcome ${
+              showOutcome?.outcome === "won"
+                ? "event_main_left_outcome_won"
+                : ""
+            } ${
+              showOutcome?.outcome === "lost"
+                ? "event_main_left_outcome_lost"
+                : ""
+            }`}
+          >
+            Outcome: {`${showOutcome?.result ? showOutcome?.result : ""}`}
+          </div>
         </div>
         <div className="event_main_right">
           <div className="event_main_right_betcontainer">
             <div className="event_main_right_betcontainer_title">
-              Choose your bet
+              Make your move
             </div>
 
             <div className="event_main_right_betcontainer_container">
@@ -309,7 +351,7 @@ export default function RoulettePage() {
               </div>
             </div>
 
-            <div className="event_main_right_betcontainer_container">
+            <div className="event_main_right_betcontainer_container event_main_right_betcontainer_container_amount">
               <div className="event_main_right_betcontainer_container_title">
                 Amount
               </div>
@@ -335,7 +377,7 @@ export default function RoulettePage() {
               onClick={handlePlaceBetClick}
               className="event_main_right_betcontainer_container button"
             >
-              {`Bet Now`}
+              {`Try your luck`}
             </div>
           </div>
         </div>

@@ -26,9 +26,9 @@ function EventModal({ outcome, onClose }) {
     }, 1100);
   };
   useEffect(() => {
-    if (outcomeObj.length === 5 || outcomeObj.length === 6) {
+    if (outcomeObj.diceValues.length === 5 || outcomeObj.diceValues.length === 6) {
       setDiceContainerClass("cover_modal_body_dicecontainer_3x2");
-    } else if (outcomeObj.length <= 2) {
+    } else if (outcomeObj.diceValues.length <= 2) {
       setDiceContainerClass("cover_modal_body_dicecontainer_1x2");
     } else {
       setDiceContainerClass("cover_modal_body_dicecontainer_2x3");
@@ -81,7 +81,7 @@ function EventModal({ outcome, onClose }) {
             }`}
           >
             {winningOutcome === true && "Hurray you won!"}
-            {winningOutcome === false && "Sorry you lost!"}
+            {winningOutcome === false && "Sorry. Better luck next time!"}
             {winningOutcome === null && ""}
           </div>
 

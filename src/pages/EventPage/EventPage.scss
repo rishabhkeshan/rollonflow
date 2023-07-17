@@ -102,6 +102,16 @@
         background-color: #1a1b20;
         @apply flex gap-12;
       }
+      &_outcome {
+        @apply flex font-bold justify-center mt-6 text-white w-full;
+        padding-right: 20vw;
+        &_won {
+          color: #0dcd8a;
+        }
+        &_lost {
+          @apply text-red-600;
+        }
+      }
     }
     &_right {
       width: 45%;
@@ -122,12 +132,15 @@
           &_title {
             @apply text-lg font-semibold;
           }
+          &_amount {
+            @apply mt-6 mb-4;
+          }
           &_subtitle {
             @apply text-xs text-red-600;
           }
           &_options {
             @apply flex gap-2 justify-end;
-            width: 350px;
+            width: 280px;
             &_value {
               @apply p-3 rounded-lg cursor-pointer bg-inherit px-6 flex justify-center;
               width: 96px !important;
@@ -136,7 +149,6 @@
             .input {
               @apply outline-none cursor-text text-center w-full p-3 rounded-lg bg-inherit flex justify-center;
               border: none;
-              border-radius: 0px;
               border-bottom: 1px solid var(--border-1, #222);
               background-color: #1d1d1d;
             }
@@ -146,149 +158,14 @@
           @apply px-4 py-3 rounded-lg text-center my-3 font-bold flex w-full justify-center;
           border: 1px solid var(--border-1, #222);
           span {
-            @apply px-1.5 underline font-black;
+            @apply px-1.5 underline;
+            color: #0dcd8a;
           }
         }
         .button {
           @apply px-4 py-3 rounded-lg text-center font-bold flex w-full justify-center cursor-pointer;
           border: 1px solid var(--border-1, #222);
           background: #0dcd8a;
-        }
-        &_bar {
-          @apply flex w-full gap-2 mt-4;
-          &_green {
-            @apply w-1/2 h-2;
-            border-radius: 32423px;
-            background: var(--green, #b6f72b);
-          }
-          &_red {
-            @apply w-1/2 h-2;
-            border-radius: 32423px;
-            background: var(--brand-red, #f55571);
-          }
-        }
-        &_yesnobuttons {
-          @apply flex gap-2 mt-2;
-          color: var(--text-grey, #dadada);
-          &_yes {
-            @apply flex gap-1.5 justify-center items-center font-semibold px-4 py-3 rounded-lg cursor-pointer;
-            border: 1.5px solid #282828;
-            background: #080808;
-            span {
-              color: var(--green, #b6f72b);
-            }
-          }
-          &_no {
-            @apply flex gap-1.5 justify-center items-center font-semibold px-4 py-3 rounded-lg cursor-pointer;
-            background: #080808;
-            border: 1.5px solid #282828;
-            span {
-              color: var(--brand-red, #f55571);
-            }
-          }
-          .active_no {
-            border: 1.5px solid #f55571;
-          }
-          .active_yes {
-            border: 1.5px solid #b6f72b;
-          }
-        }
-        &_formcontainer {
-          @apply flex flex-col w-full gap-2 mt-4;
-          &_title {
-            @apply text-white text-lg font-semibold;
-          }
-          &_input {
-            @apply px-4 py-3 rounded-lg text-white outline-none;
-            border: 1px solid #282828;
-            background: var(--material-90, #1d1d1d);
-            &:focus {
-              border: 1px solid #fff;
-              box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.25);
-            }
-          }
-          &_value {
-            @apply font-medium;
-            color: #646464;
-            span {
-              color: white;
-              &:first-child {
-                @apply mr-4;
-              }
-            }
-          }
-          &_buybutton {
-            @apply flex w-full rounded-md justify-center items-center p-2 text-lg font-semibold mt-2 cursor-pointer;
-            color: var(--brand-black, #101012);
-            background: var(--green, #b6f72b);
-          }
-          &_sellbutton {
-            @apply flex w-full rounded-md justify-center items-center p-2 text-lg font-semibold mt-2 cursor-pointer;
-            color: var(--brand-black, #101012);
-            background: var(--brand-red, #f55571);
-          }
-        }
-        &_detailscontainer {
-          @apply flex flex-col mt-4;
-          &_details {
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            &_details-label {
-              @apply font-medium mr-2;
-              color: var(--light-text, #646464);
-            }
-
-            &_details-value {
-              flex-grow: 1;
-              text-align: right;
-              color: var(--text-grey, #dadada);
-            }
-          }
-        }
-      }
-      &_liquiditycontainer {
-        @apply flex flex-col w-full rounded-lg p-6 gap-2 mt-4;
-        background: linear-gradient(
-          129deg,
-          #131313 0%,
-          rgba(26, 26, 26, 0) 100%
-        );
-        border: 2px solid var(--border, #252525);
-        &_title {
-          @apply text-2xl font-semibold text-white;
-        }
-        &_formcontainer {
-          @apply flex flex-col w-full gap-2 mt-4;
-          &_title {
-            @apply text-white text-lg font-semibold;
-          }
-          &_input {
-            @apply px-4 py-3 rounded-lg text-white outline-none;
-            border: 1px solid #282828;
-            background: var(--material-90, #1d1d1d);
-            &:focus {
-              border: 1px solid #fff;
-              box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.25);
-            }
-          }
-          &_value {
-            @apply font-medium;
-            color: #646464;
-            span {
-              color: white;
-              &:first-child {
-                @apply mr-4;
-              }
-            }
-          }
-          &_addbutton {
-            @apply flex w-full rounded-md justify-center items-center p-2 text-lg font-semibold mt-2 cursor-pointer;
-            color: var(--brand-black, #101012);
-            background: var(--brand-purple, #d4d5f9);
-          }
         }
       }
     }
@@ -306,4 +183,22 @@
   z-index: 10;
   top: -450px;
   left: 0;
+}
+.no-covers-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 75px;
+}
+
+.no-covers-image {
+  width: 200px;
+  height: 200px;
+}
+
+.no-covers-text {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #656169;
 }

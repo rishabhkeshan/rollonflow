@@ -1,0 +1,12 @@
+.footer{
+    @apply fixed w-screen flex px-8 items-center justify-between bottom-0 h-16 bg-black z-50;
+   &_left{
+    @apply text-white flex;
+    img{
+        height: 30px;
+        float: right;
+        @apply ml-2;
+    }
+   }
+
+}
