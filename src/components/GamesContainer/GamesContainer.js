@@ -11,7 +11,7 @@ export default function MarketsContainer() {
       type: "Multi user",
       name: "Roll the Dice",
       text: "Do the flow blocks, sorry gods favour you? Bet your chances against the dices!",
-      volume: "11.3K",
+      volume: "723 FLOW",
       date: "May 31, 2023",
       icon: Dice,
       path: "rollthedice"
@@ -20,7 +20,7 @@ export default function MarketsContainer() {
       type: "Against the computer",
       name: "Beat the Roulette",
       text: "Red or Black, Odd or Even, Lucky Number 7 or is it 29? Find yours now!",
-      volume: "49.2K",
+      volume: "900 FLOW",
       date: "May 31, 2023",
       icon: Roulette,
       path:"beattheroulette"
@@ -71,9 +71,6 @@ export default function MarketsContainer() {
                     <div className="markets_main_cardscontainer_card_footer_left_detail">
                       $ {card.volume}
                     </div>
-                  </div>
-                  <div className="markets_main_cardscontainer_card_footer_right">
-                    No. of bets: 35
                   </div>
                 </div>
               </Link>
