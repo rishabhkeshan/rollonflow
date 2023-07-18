@@ -55,15 +55,16 @@ Let's dive into the games that Roll on Flow offers:
 
 ## A demostration of App
 
-- Click the Image to be redirected to the Video
+Click Below!
 
-[![YouTube Video]()
+[![YouTube Video](https://img.youtube.com/vi/ooCceQBc-pA/0.jpg)](https://www.youtube.com/watch?v=ooCceQBc-pA)]
+
+
 
 ## 🤝 Contributions
 
 - Feel Free to Open a PR/Issue for any feature or bug(s).
 - Make sure you follow the [community guidelines](https://docs.github.com/en/github/site-policy/github-community-guidelines)!
-- Feel free to open an issue to ask a question/discuss anything about nftix.
 - Have a feature request? Open an [Issue](https://github.com/rishabhkeshan/rollonflow/issues/new)!
 
 ## ⚖ License
