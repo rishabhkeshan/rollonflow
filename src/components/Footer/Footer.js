@@ -25,18 +25,6 @@ export default function Footer() {
       <div className="footer_left">
         Powered by <img src={flow} alt="flow" />
       </div>
-      <div className="footer_left">
-        {" "}
-        Made with ❤️ by{" "}
-        <a
-          rel="noreferrer"
-          target="_blank"
-          href="https://github.com/rishabhkeshan/rollonflow"
-          className="px-1 underline"
-        >
-          Rishabh
-        </a>
-      </div>
     </div>
   ) : (
     <></>
