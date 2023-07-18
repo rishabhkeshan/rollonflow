@@ -9,12 +9,19 @@
 
 # Roll on Flow
 
-> Roll on Flow is the
+> Bet Big, Win Bigger - Let Luck Flow with Blockchain!
 
 ## 🍿 Features
+- Transparent and Fair Betting: Ensures provably fair outcomes using the transparency and immutability of the Flow blockchain with randomness being generated from block height and timestamp.
+- Decentralized 1v1 Betting: Engage in thrilling 1v1 betting games with direct peer-to-peer interactions.
+- Customizable Bet Configurations: Configure bets by choosing the number of dice, desired outcome, expiry time, and bet amount.
+- Immersive User Interface: Enjoy a user-friendly interface with captivating animations, real-time updates, and intuitive navigation.
 
+Let's dive into the games that Roll on Flow offers:
 
+**Roll the Dice:** Are you ready to go head-to-head against other players in an epic game of chance? Roll the Dice is a 1v1 game where you can create your own bet and show off your dice-rolling skills. Use up to 6 dice, configure your predicted outcome, choose an expiry time, and set the amount you want to bet. It's all in your hands! But beware, your opponents are out to challenge your luck. Browse through the list of bet cards, choose your match, and get ready for the adrenaline-pumping action. With a thrilling dice roll animation and the outcome revealed right before your eyes, Roll the Dice guarantees heart-pounding excitement and the chance to win big!
 
+**Beat the Roulette:** Want to take on the computer and test your luck in a classic game of chance? Roll on Flow's Roulette is the game for you! Place your bets on various outcomes like odd, even, red, black, or bet on a specific range of numbers. The roulette wheel spins, the tension builds, and then... the ball finds its home! Will fortune favor you? Our roulette game brings the glitz and glamour of the casino right to your screen. Get ready to experience the rush as the outcome unfolds, all backed by the secure and transparent Flow blockchain.
   **A lot more to come!**
 
 ## ⬇ Installation
