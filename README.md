@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+<p align="center">
+  <a href="https://github.com/rishabhkeshan/rollonflow">
+    <img src="./src/assets/landingbanner.svg" alt="Logo" width="480" height="240">
+  </a>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![GitHub License](https://img.shields.io/github/license/rishabhkeshan/rollonflow)](https://github.com/rishabhkeshan/rollonflow/blob/master/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/rishabhkeshan/rollonflow/issues/new/choose)
 
-## Available Scripts
+# Roll on Flow
 
-In the project directory, you can run:
+> Roll on Flow is the
 
-### `npm start`
+## 🍿 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+  **A lot more to come!**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ⬇ Installation
 
-### `npm run build`
+- Clone the repo
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  `git clone https://github.com/rishabhkeshan/rollonflow.git && cd rollonflow`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Run the Project
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  Once you are in the project directory nstall the required dependencies using a package manager `yarn` or `npm`.
 
-### `npm run eject`
+  `yarn add` or `npm install`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  `yarn start` or `npm start`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- The above commands runs the app in the development mode
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📱 Technologies Used
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **[Cadence](https://developers.flow.com/cadence/language):** To write the smart contracts and logic governing the game rules and outcomes.
+- **[Flow Emulator](https://developers.flow.com/cadence/language):** To simulate the blockchain environment locally, facilitating testing and debugging.
+- **[Flow Client Library](https://developers.flow.com/tooling/fcl-js/api):** Client side functions for interacting with the blockchain
+- **[Tailwind](https://tailwind.com):** To build lovely UIs and components
+- **[ReactJS](https://reactjs.org/):** The webframework powering our website
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## A demostration of App
 
-### Analyzing the Bundle Size
+- Click the Image to be redirected to the Video
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+[![YouTube Video]()
 
-### Making a Progressive Web App
+## 🤝 Contributions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Feel Free to Open a PR/Issue for any feature or bug(s).
+- Make sure you follow the [community guidelines](https://docs.github.com/en/github/site-policy/github-community-guidelines)!
+- Feel free to open an issue to ask a question/discuss anything about nftix.
+- Have a feature request? Open an [Issue](https://github.com/rishabhkeshan/rollonflow/issues/new)!
 
-### Advanced Configuration
+## ⚖ License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Copyright 2023 Rishabh Keshan and Hemanth Krishna
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Licensed under MIT License : https://opensource.org/licenses/MIT
