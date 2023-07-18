@@ -31,10 +31,10 @@ export default function Footer() {
         <a
           rel="noreferrer"
           target="_blank"
-          href="https://devfolio.com/rishabhkeshan"
+          href="https://github.com/rishabhkeshan/rollonflow"
           className="px-1 underline"
         >
-          Team 30PercentTax
+          Rishabh
         </a>
       </div>
     </div>

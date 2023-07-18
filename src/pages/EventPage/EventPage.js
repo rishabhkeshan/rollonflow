@@ -208,7 +208,7 @@ export default function EventPage() {
           </div>
         </div>
       </div>
-      <div className="event_main">
+      <div className="event_main pb-24">
         {allEvents.length >= 1 && (
           <div className="event_main_cardscontainer">
             {allEvents.map((order, id) => (
