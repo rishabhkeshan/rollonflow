@@ -150,6 +150,10 @@ export default function RoulettePage() {
   };
 
   const handlePlaceBetClick = async () => {
+    if (!currentUser) {
+      showErrorSnack("Please connect your Flow wallet");
+      return;
+    }
     if (isFormValid) {
       setShowLoading(true);
       setShowLoading(true);

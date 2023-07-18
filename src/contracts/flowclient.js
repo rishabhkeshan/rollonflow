@@ -1,14 +1,46 @@
 import * as fcl from "@onflow/fcl";
 
 class FlowClient {
-  rollOnFlow = "0x995a5c89574e5e95"
-  fungibleToken = "0x9a0766d93b6608b7"
+  rollOnFlow = "0x995a5c89574e5e95";
+  fungibleToken = "0x9a0766d93b6608b7";
   constructor(fclUser) {
     this.fclUser = fclUser;
   }
+  async getUserFlowBalance() {
+    const cadence = `
+      import FlowToken from ${this.fungibleToken}
+      
+      pub fun main(address: Address): UFix64 {
+        let vaultRef = getAccount(address)
+          .getCapability<&FlowToken.Vault{FlowToken.Balance}>(/public/flowTokenBalance)
+          .borrow()
+          ?? panic("Could not borrow Balance reference to the Vault");
+        return vaultRef.balance;
+      }
+    `;
+      console.log("hi", this.fclUser.addr);
+    try {
+      const result = await fcl.send([
+        fcl.script(cadence),
+        fcl.args([fcl.arg(this.fclUser.addr, { type: "Address" })]),
+      ]);
 
+      const balance = fcl.decode(result);
+      return balance;
+    } catch (error) {
+      console.error("Error fetching Flow balance:", error);
+      return 0;
+    }
+  }
 
-  async createDiceEvent(dices, eventNumeric, operator, expirySeconds, amount, address) {
+  async createDiceEvent(
+    dices,
+    eventNumeric,
+    operator,
+    expirySeconds,
+    amount,
+    address
+  ) {
     const cadence = `
     import RollOnFlow_v02 from ${this.rollOnFlow}
     import FungibleToken from ${this.fungibleToken}
@@ -18,7 +50,9 @@ class FlowClient {
     
       prepare(acct: AuthAccount) {
         let mainFlowVault = acct.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault) ?? panic("cannot borrow flowtoken valut from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(amount).toFixed(1)})
+        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(
+          amount
+        ).toFixed(1)})
       }
     
       execute {
@@ -30,7 +64,7 @@ class FlowClient {
       }
     }
     `;
-    return await this.executeMutation(cadence)
+    return await this.executeMutation(cadence);
   }
 
   async roll(eventID, amount, address) {
@@ -42,14 +76,16 @@ class FlowClient {
       let paymentVault: @FungibleToken.Vault
       prepare(acct: AuthAccount) {
         let mainFlowVault = acct.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault) ?? panic("cannot borrow flowtoken valut from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(amount).toFixed(1)})
+        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(
+          amount
+        ).toFixed(1)})
       }
       execute {
         log(RollOnFlow_v02.roll(eventId: ${eventID}, payment: <- self.paymentVault, address: ${address}))
       }
     }
-    `
-    return await this.executeMutation(cadence)    
+    `;
+    return await this.executeMutation(cadence);
   }
 
   async roulette(eventType, numeric, amount, address) {
@@ -61,14 +97,16 @@ class FlowClient {
       let paymentVault: @FungibleToken.Vault
       prepare(acct: AuthAccount) {
         let mainFlowVault = acct.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault) ?? panic("cannot borrow flowtoken valut from acct storage")
-        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(amount).toFixed(1)})
+        self.paymentVault <- mainFlowVault.withdraw(amount: ${parseFloat(
+          amount
+        ).toFixed(1)})
       }
       execute {
         log(RollOnFlow_v02.roulette(eventType: "${eventType}", numeric: ${numeric}, payment: <- self.paymentVault, address: ${address}))
       }
     }
-    `
-    return await this.executeMutation(cadence)    
+    `;
+    return await this.executeMutation(cadence);
   }
 
   async helloWorld() {
@@ -81,8 +119,8 @@ class FlowClient {
           log("Hello from execute")
         }
       }   
-    `
-    return await this.executeMutation(cadence)
+    `;
+    return await this.executeMutation(cadence);
   }
 
   async getAllEvents() {
@@ -91,12 +129,12 @@ class FlowClient {
     pub fun main(): [RollOnFlow_v02.Event] {
         return RollOnFlow_v02.getLiveEvents()
     }
-    `
-    return await this.executeQuery(cadence)
+    `;
+    return await this.executeQuery(cadence);
   }
 
   eventsList() {
-    const mapper = {}
+    const mapper = {};
     const contractAddress = "995a5c89574e5e95";
     const contractName = "RollOnFlow_v02";
     const rollPublisher = "RollPublisher";
@@ -106,8 +144,7 @@ class FlowClient {
     mapper.rollPublisherEvent = `A.${contractAddress}.${contractName}.${rollPublisher}`;
     mapper.paymentPublisherEvent = `A.${contractAddress}.${contractName}.${paymentPublisher}`;
     mapper.roulettePublisherEvent = `A.${contractAddress}.${contractName}.${roulettePublisher}`;
-    return mapper
-
+    return mapper;
   }
 
   async executeMutation(script) {
@@ -129,7 +166,6 @@ class FlowClient {
     });
     return result;
   }
-
 }
 
 export default FlowClient

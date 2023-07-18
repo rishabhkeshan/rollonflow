@@ -98,6 +98,10 @@ function CreateEventModal({ event, onClose }) {
     }
   };
   const handleCreateEvent = async () => {
+    if (!currentUser) {
+      showErrorSnack("Please connect your Flow wallet");
+      return;
+    }
     if (isFormValid) {
       setShowLoading(true);
 
@@ -124,7 +128,7 @@ function CreateEventModal({ event, onClose }) {
         onClose();
         setShowLoading(false);
       } catch (err) {
-        console.log(err);      
+        console.log(err);
         showErrorSnack("Could not create an event");
 
         setShowLoading(false);

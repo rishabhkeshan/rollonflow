@@ -52,6 +52,8 @@ export default function EventPage() {
         const flowjs = new FlowClient(user);
         const response = await flowjs.getAllEvents();
         console.log(response);
+        // const userBalance = await flowjs.getUserFlowBalance();
+        // console.log("ub",userBalance);
         response.forEach((res) => {
           var date = new Date(parseFloat(res.expiry * 1000));
           let operator = res.operator;
@@ -113,21 +115,15 @@ export default function EventPage() {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const handleCardClick = async (card) => {
+    if (!currentUser) {
+      showErrorSnack("Please connect your Flow wallet");
+      return;
+    }
     setShowLoading(true);
 
     setSelectedCard(card);
     console.log(card);
     listener(card.id);
-    // const outcomeData = {
-    //   winner: "0x02f52a27fc97435a",
-    //   outcome: "lost",
-    //   sum: "11",
-    //   operator: card.operator,
-    //   operatorValue: card.operatorValue,
-    //   diceValues: ["5", "6"],
-    // };
-    // setOutcome(outcomeData);
-    // setIsModalOpen(true);
 
     try {
       const res = await flowjs.roll(card.id, card.funds, currentUser.addr);
