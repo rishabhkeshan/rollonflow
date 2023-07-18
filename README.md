@@ -68,6 +68,6 @@ Let's dive into the games that Roll on Flow offers:
 
 ## ⚖ License
 
-Copyright 2023 Rishabh Keshan and Hemanth Krishna
+Copyright 2023 Rishabh Keshan
 
 Licensed under MIT License : https://opensource.org/licenses/MIT
